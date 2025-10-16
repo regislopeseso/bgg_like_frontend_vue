@@ -32,4 +32,10 @@
     </div>
 </template>
 
-<style></style>
+<style lang="scss" scoped>
+  .offcanvas-custom {
+    background-color: var(--second-bg-color) !important;
+    color: var(--text-color) !important;
+  }
+
+</style>

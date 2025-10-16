@@ -2,6 +2,7 @@
   import { onMounted, computed } from 'vue'
   import { useAuthenticationStore } from '@/stores/authenticationStore'
   import { useThemeStore } from '@/stores/themeStore'
+  import LogoBrand from './LogoBrand.vue'
   import ThemeOffCanvas from './ThemeOffCanvas.vue'
   import ProfileDropdown from './ProfileDropdown.vue'
 
@@ -13,147 +14,90 @@
     authenticationStore.checkAuthentication()
   })
 
-
-
   // Define navigation items
   const navItems = computed(() => [
-    { label: 'HOME', id:'', href:'#', show: true},
-    { label: 'EXPLORE', id:'',href: '#', show: true},
-    { label: 'LIFECOUNTER', id:'img-access-lifecounter', href: '#', show: true, isImage: true },
-    { label: 'SIGN UP/IN', id:'',href: '', show: !authenticationStore.isAuthenticated },
-    { label: 'USER', id:'',href: '', show: authenticationStore.canAccessUser },
-    { label: 'ADMIN', id:'',href: '', show: authenticationStore.canAccessAdmin },
-    { label: 'DEV', id:'',href: '', show: authenticationStore.canAccessDev },
+    { label: 'HOME', id:'', route:'/', show: true, isActive: true},
+    { label: 'EXPLORE', id:'', route: '/explore', show: true},
+    { label: 'LIFECOUNTER', route: '/lifecounter', id:'img-access-lifecounter', href: '#', show: true, isImage: true },
+    { label: 'SIGN UP/IN', id:'', route: '/register', show: !authenticationStore.isAuthenticated },
+    { label: 'USER', id:'', route: '/user', show: authenticationStore.canAccessUser },
+    { label: 'ADMIN', id:'', route: '/admin', show: authenticationStore.canAccessAdmin },
+    { label: 'DEV', id:'', route: '/dev', show: authenticationStore.canAccessDev },
   ])
 
 </script>
 
 <template>
-  <div>
-    <header class="header">
-      <a href="#" class="logo">BBG <span>LIKE</span> </a>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <LogoBrand />
 
-      <nav class="navbar">
-        <div class="navOptions d-flex flex-row align-items-center justify-content-between">
-          <!-- Desktop Navigation -->
-          <template v-for="item in navItems" :key="item.label">
-            <a
+      <button
+        class="navbar-toggler navHamburger"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbar-content"
+        aria-controls="navbar-content"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+
+
+    <div class="collapse navbar-collapse" id="navbar-content">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <template v-for="item in navItems" :key="item.label">
+          <li class="nav-item">
+            <RouterLink
               v-if="item.show && item.isImage"
+              class="nav-link"
               :id="item.id"
-              :href="item.href"
+              :to="item.route"
               :class="{ 'light-theme' : themeStore.isLight}"
             >
               <img src="/images/navbar/lifecounter_white.png" alt="" />
-            </a>
+            </RouterLink>
 
-            <a
+            <RouterLink
               v-else-if="item.show"
-              :id="item.id"
-              :href="item.href"
               class="nav-link"
+              :to="item.route"
             >
               {{ item.label }}
-            </a>
-          </template>
+            </RouterLink>
+          </li>
+        </template>
+      </ul>
 
-          <ProfileDropdown />
+      <ProfileDropdown />
 
-          <a
-            style="text-decoration: none"
-            href="#"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasRight"
-          >
-            <i class="bi bi-gear"></i>
-          </a>
-        </div>
+      <a
+        style="text-decoration: none"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasRight"
+        href=""
+      >
+        <i class="bi bi-gear"></i>
+      </a>
+    </div>
+  </nav>
 
-        <!-- Mobile-Navigation -->
-        <div class="navHamburger">
-          <nav class="navbar navbar-expand-lg">
-            <div class="d-flex flex-column align-items-end">
-              <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#toggle-hamburguer-menu"
-              >
-                <i class="bi bi-list"></i>
-              </button>
-
-              <div class="collapse navbar-collapse text-end" id="toggle-hamburguer-menu">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                  <li
-                    class="nav-item"
-                    v-for="item in navItems"
-                    :key="item.label"
-                  >
-                    <a
-                      v-if="item.show && item.isImage"
-                      id="img-access-lifecounter-mobile"
-                      :href="item.href"
-                      :class="{ 'light-theme': themeStore.isLight }"
-                    >
-                      <img src="/images/navbar/lifecounter_white.png" alt="" />
-                    </a>
-                    <a
-                      v-else-if="item.show"
-                      :href="item.href"
-                      class="nav-link"
-                    >
-                      {{ item.label }}
-                    </a>
-                  </li>
-
-                  <ProfileDropdown />
-
-                  <li class="nav-item">
-                    <button
-                      style="text-decoration: none"
-                      href="#"
-                      data-bs-toggle="offcanvas"
-                      data-bs-target="#offcanvasRight"
-                      aria-controls="offcanvasRight"
-                    >
-                      <i class="bi bi-gear"></i>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </nav>
-        </div>
-      </nav>
-
-      <ThemeOffCanvas />
-    </header>
-  </div>
+  <ThemeOffCanvas />
 </template>
 
 <style lang="scss">
-  .header {
+  nav{
     background-color: var(--second-bg-color);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 0 9%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 100;
   }
-
-  .logo {
-    font-size: 3rem;
-    color: var(--text-color);
-    font-weight: 600;
+  .navbar-brand {
+    color: var(--main-color);
   }
 
   .navbar a {
     font-size: 1rem;
     color: var(--text-color);
-    margin-left: 4rem;
     transition: 0.3s;
   }
 
@@ -161,8 +105,17 @@
     color: var(--main-color);
   }
 
-  .navHamburger {
-    display: none;
+  .navbar-nav .nav-link.router-link-active,
+  .navbar-nav .nav-link.router-link-exact-active {
+    color: var(--main-color) !important;
+  }
+
+  .navbar-nav .nav-link:hover{
+    text-decoration: overline double;
+    cursor: pointer;
+  }
+  .nav-link:focus{
+    color: var(--main-color);
   }
 
   .btn-theme {
@@ -209,48 +162,6 @@
       brightness(94%) contrast(101%);
   }
 
-  @media screen and (max-width: 1350px) {
-    .header {
-      padding: 0 5%;
-    }
-    .logo {
-      font-size: 30px;
-    }
-  }
-  @media screen and (max-width: 991px) {
-    .header {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-    }
-
-    .navOptions {
-      display: none !important;
-    }
-    .navHamburger {
-      display: flex;
-    }
-    .navbar-toggler {
-      color: var(--main-color);
-      font-size: 2rem;
-      border: none;
-      background-color: var(--second-bg-color);
-    }
-    .container-fluid {
-      justify-content: end;
-      text-align: end;
-    }
-
-    .navbar-toggler:hover {
-      color: var(--text-color);
-      background-color: var(--second-bg-color);
-      box-shadow: 0 0 1rem var(--text-color) !important;
-    }
-
-    .header .navbar-toggler:focus {
-      box-shadow: none;
-    }
-  }
 </style>
 
 

@@ -1,7 +1,18 @@
 <script></script>
 
 <template>
-  <div></div>
+  <div class="explore">
+    <h1>
+      Explore view
+    </h1>
+  </div>
 </template>
 
-<style></style>
+<style scoped>
+.explore {
+  color: white;
+  position: absolute;
+  top: 400px;
+}
+
+</style>
