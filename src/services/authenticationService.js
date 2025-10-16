@@ -2,8 +2,8 @@ import axios from 'axios'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
-export const authService = {
-  async checkAuthStatus() {
+export const authenticationService = {
+  async checkAuthenticationStatus() {
     const response = await axios.get(`${API_BASE_URL}/users/validatestatus`)
     return response.data
   },

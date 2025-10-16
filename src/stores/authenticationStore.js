@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { authService } from '@/services/authService'
+import { authenticationService } from '@/services/authenticationService'
 
-export const useAuthStore = defineStore('auth', () => {
+export const useAuthenticationStore = defineStore('auth', () => {
   // State
   const isAuthenticated = ref(false)
   const role = ref(null) // null, 'User', 'Administrator', 'Developer'
@@ -25,12 +25,12 @@ export const useAuthStore = defineStore('auth', () => {
   const canAccessDev = computed(() => role.value === 'Developer')
 
   // Actions
-  async function checkAuth() {
+  async function checkAuthentication() {
     loading.value = true
     error.value = null
 
     try {
-      const data = await authService.checkAuthStatus()
+      const data = await authenticationService.checkAuthenticationStatus()
       isAuthenticated.value = data.isAuthenticated
       role.value = data.role
     } catch (err) {
@@ -47,7 +47,7 @@ export const useAuthStore = defineStore('auth', () => {
     error.value = null
 
     try {
-      const data = await authService.login(credentials)
+      const data = await authenticationService.login(credentials)
       isAuthenticated.value = true
       role.value = data.role
       return data
@@ -61,7 +61,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function signout() {
     try {
-      await authService.logout()
+      await authenticationService.logout()
     } catch (err) {
       console.error('Logout error:', err)
     } finally {
@@ -84,7 +84,7 @@ export const useAuthStore = defineStore('auth', () => {
     canAccessAdmin,
     canAccessDev,
     // Actions
-    checkAuth,
+    checkAuthentication,
     login,
     signout,
   }

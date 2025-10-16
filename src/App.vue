@@ -2,18 +2,19 @@
 import { onMounted } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { useThemeStore } from '@/stores/themeStore'
-import { useAuthStore } from '@/stores/authStore'
-import AppNavbar from './components/AppNavbar.vue'
+import { useAuthenticationStore } from '@/stores/authenticationStore'
+import AppNavbar from './components/navbar/AppNavbar.vue'
+
 
 const themeStore = useThemeStore()
-const authStore = useAuthStore()
+const authenticationStore = useAuthenticationStore()
 
 onMounted(() => {
   // Initialize theme from localStorage
   themeStore.initTheme()
 
   // Check authentication status
-  authStore.checkAuth()
+  authenticationStore.checkAuthentication()
 })
 </script>
 
