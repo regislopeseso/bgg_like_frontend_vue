@@ -16,6 +16,9 @@
 </template>
 
 <style lang="scss" scoped>
+  .navbar-brand {
+      color: var(--blueish-color);
+    }
   .logo {
     font-size: 2rem;
     font-weight: bolder;
@@ -28,12 +31,12 @@
   }
 
   .logo-bbg.swapped {
-    color: var(--main-color);
+    color: var(--blueish-color);
   }
 
   /* LIKE default: main-color, swapped: text-color */
   .logo-like {
-    color: var(--main-color);
+    color: var(--blueish-color);
     transition: color 0.3s ease;
   }
 
@@ -43,7 +46,7 @@
 
   /* Hover effects - opposite of current state */
   .logo:hover .logo-bbg {
-    color: var(--main-color);
+    color: var(--blueish-color);
   }
 
   .logo:hover .logo-bbg.swapped {
@@ -55,6 +58,6 @@
   }
 
   .logo:hover .logo-like.swapped {
-    color: var(--main-color);
+    color: var(--blueish-color);
   }
 </style>

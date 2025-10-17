@@ -14,33 +14,33 @@
     {
       id: 'li-edit-profile',
       label: 'Edit Profile',
-      href: '',
+      href: '#',
       class: 'config-item'
     },
     {
       id: 'li-change-password',
       label: 'Change Password',
-      href: '',
+      href: '#',
       class: 'config-item'
     },
     {
       id: 'li-delete-profile',
       label: 'Delete Profile',
-      href: '',
+      href: '#',
       class: 'config-item'
     },
     { divider: true },
     {
       id: 'li-backup-data',
       label: 'Backup Data',
-      href: '',
+      href: '#',
       class: 'config-item'
     },
     { divider: true },
     {
       id: 'li-sign-out',
       label: 'Sign Out',
-      href: '',
+      href: '#',
       class: 'config-item logOut',
       action: 'signout'
     }
@@ -89,34 +89,6 @@
 </template>
 
 <style lang="scss" scoped>
-  #users-profile-configurations {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6);
-    z-index: 1000;
-
-    li {
-      margin: 0;
-    }
-  }
-
-  #edit-profile {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 25rem;
-    height: 35rem;
-    padding: 2rem;
-    border-radius: 2rem;
-    box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
-    background-color: var(--second-bg-color);
-    z-index: 2000;
-  }
-
   #ul-profile-configurations {
     background-color: var(--second-bg-color);
     box-shadow: 0 0 1rem var(--text-color) !important;
@@ -129,29 +101,29 @@
   }
 
   #li-edit-profile:hover {
-    color: var(--greenish);
-    box-shadow: 0 0 1rem var(--greenish) !important;
+    color: var(--yellowish-color);
+    box-shadow: 0 0 1rem var(--yellowish-color) !important;
   }
 
   #li-change-password:hover {
-    color: var(--yellowish);
-    box-shadow: 0 0 1rem var(--yellowish) !important;
+    color: var(--yellowish-color);
+    box-shadow: 0 0 1rem var(--yellowish-color) !important;
   }
 
   #li-delete-profile:hover {
-    color: var(--reddish);
-    box-shadow: 0 0 1rem var(--reddish) !important;
+    color: var(--reddish-color);
+    box-shadow: 0 0 1rem var(--reddish-color) !important;
   }
 
   #li-backup-data:hover {
     color: var(--text-color);
     font-weight: bold;
-    box-shadow: 0 0 1rem var(--main-color) !important;
+    box-shadow: 0 0 1rem var(--blueish-color) !important;
   }
 
   #li-sign-out:hover {
-    color: var(--main-color);
+    color: var(--blueish-color);
     font-weight: bold;
-    box-shadow: 0 0 1rem var(--main-color) !important;
+    box-shadow: 0 0 1rem var(--blueish-color) !important;
   }
 </style>

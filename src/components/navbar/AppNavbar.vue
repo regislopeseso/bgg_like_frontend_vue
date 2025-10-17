@@ -4,25 +4,24 @@
   import { useThemeStore } from '@/stores/themeStore'
   import LogoBrand from './LogoBrand.vue'
   import ThemeOffCanvas from './ThemeOffCanvas.vue'
+
   import ProfileDropdown from './ProfileDropdown.vue'
 
   const themeStore = useThemeStore()
-
   const authenticationStore = useAuthenticationStore()
 
   onMounted(() => {
     authenticationStore.checkAuthentication()
+
   })
 
   // Define navigation items
   const navItems = computed(() => [
-    { label: 'HOME', id:'', route:'/', show: true, isActive: true},
-    { label: 'EXPLORE', id:'', route: '/explore', show: true},
-    { label: 'LIFECOUNTER', route: '/lifecounter', id:'img-access-lifecounter', href: '#', show: true, isImage: true },
-    { label: 'SIGN UP/IN', id:'', route: '/register', show: !authenticationStore.isAuthenticated },
-    { label: 'USER', id:'', route: '/user', show: authenticationStore.canAccessUser },
-    { label: 'ADMIN', id:'', route: '/admin', show: authenticationStore.canAccessAdmin },
-    { label: 'DEV', id:'', route: '/dev', show: authenticationStore.canAccessDev },
+    { n: 1, id: '', route: "/", label: "Home",   show: true},
+    { n: 2, id: '', route: "/explore", label: "Explore",  show: true},
+    { n: 3, id: '', route: "/user", label: "User",  show: true }, //authenticationStore.canAccessUser },
+    { n: 4, id: '', route: "/admin", label: "Admin",  show: true },//authenticationStore.canAccessAdmin },
+    { n: 5, id: '', route: "/dev", label: "Dev",  show: true }, //authenticationStore.canAccessDev },
   ])
 
 </script>
@@ -31,7 +30,6 @@
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
       <LogoBrand />
-
       <button
         class="navbar-toggler navHamburger"
         type="button"
@@ -43,56 +41,70 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-    </div>
 
+      <div class="collapse navbar-collapse" id="navbar-content">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-    <div class="collapse navbar-collapse" id="navbar-content">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <template v-for="item in navItems" :key="item.label">
-          <li class="nav-item">
+          <template v-for="item in navItems" :key="item.id" >
+            <li class="nav-item">
+              <RouterLink
+                v-if="item.show"
+                class="nav-link"
+                :to="item.route"
+              >
+                {{ item.label }}
+              </RouterLink>
+            </li>
+          </template>
+
+        </ul>
+
+        <div class="d-flex flex-row justify-content-center align-items-center gap-5 pe-3">
+          <div class="nav-item">
             <RouterLink
-              v-if="item.show && item.isImage"
-              class="nav-link"
-              :id="item.id"
-              :to="item.route"
+              id="img-access-lifecounter"
+              to="/lifecounter"
               :class="{ 'light-theme' : themeStore.isLight}"
             >
-              <img src="/images/navbar/lifecounter_white.png" alt="" />
+              <img src="/images/navbar/lifecounter_white.png" alt="">
             </RouterLink>
+          </div>
 
+          <template v-if="!authenticationStore.isAuthenticated">
             <RouterLink
-              v-else-if="item.show"
-              class="nav-link"
-              :to="item.route"
+              class="nav-item"
+              to="/authentication"
             >
-              {{ item.label }}
+              Sign Up/In
             </RouterLink>
-          </li>
-        </template>
-      </ul>
+          </template>
+          <template v-else>
+            <ProfileDropdown />
+          </template>
 
-      <ProfileDropdown />
+          <div class="nav-item">
+            <a
+              class="nav-link"
+              style="text-decoration: none"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasRight"
+              href="#"
+            >
+              <i class="bi bi-gear"></i>
+            </a>
+          </div>
+        </div>
 
-      <a
-        style="text-decoration: none"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#offcanvasRight"
-        href=""
-      >
-        <i class="bi bi-gear"></i>
-      </a>
+
+      </div>
     </div>
   </nav>
-
-  <ThemeOffCanvas />
+   <ThemeOffCanvas />
 </template>
 
 <style lang="scss">
   nav{
     background-color: var(--second-bg-color);
-  }
-  .navbar-brand {
-    color: var(--main-color);
   }
 
   .navbar a {
@@ -102,12 +114,12 @@
   }
 
   .navbar a:hover {
-    color: var(--main-color);
+    color: var(--blueish-color);
   }
 
   .navbar-nav .nav-link.router-link-active,
   .navbar-nav .nav-link.router-link-exact-active {
-    color: var(--main-color) !important;
+    color: var(--blueish-color) !important;
   }
 
   .navbar-nav .nav-link:hover{
@@ -115,23 +127,13 @@
     cursor: pointer;
   }
   .nav-link:focus{
-    color: var(--main-color);
+    color: var(--blueish-color);
   }
 
-  .btn-theme {
-    height: 3rem;
-    width: 10rem;
-    color: var(--text-color) !important;
-    border: none !important;
-    border-radius: 2rem !important;
-    box-shadow: 0px 0px 10px 10px var(--bg-color) !important;
+  .navbar-nav .nav-link.active, .navbar-nav .nav-link.show{
+    color: var(--blueish-color)
   }
 
-  .btn-theme:hover {
-    color: var(--main-color) !important;
-    background-color: var(--bg-color) !important;
-    box-shadow: 0px 0px 10px 5px var(--text-color) !important;
-  }
 
   #img-access-lifecounter img,
   #img-access-lifecounter-mobile img {
@@ -161,8 +163,4 @@
     filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(162deg)
       brightness(94%) contrast(101%);
   }
-
 </style>
-
-
-
