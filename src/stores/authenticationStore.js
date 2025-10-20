@@ -25,34 +25,103 @@ export const useAuthenticationStore = defineStore('auth', () => {
   const canAccessDev = computed(() => role.value === 'Developer')
 
   // Actions
+  async function getrole() {
+    loading.value = true
+    error.value = null
+
+    try {
+      const data = await authenticationService.getrole()
+
+      // Update authentication state based on response
+      if (data.content && data.content.role) {
+        isAuthenticated.value = true
+        role.value = data.content.role
+      } else {
+        isAuthenticated.value = false
+        role.value = null
+      }
+
+      return data
+    } catch (err) {
+      isAuthenticated.value = false
+      role.value = null
+      error.value = err.response?.data?.message || err.message || 'Failed to get role'
+      throw err
+    } finally {
+      loading.value = false
+    }
+  }
+
   async function checkAuthentication() {
     loading.value = true
     error.value = null
 
     try {
       const data = await authenticationService.checkAuthenticationStatus()
-      isAuthenticated.value = data.isAuthenticated
-      role.value = data.role
+
+      if(data.content && data.content.isUserLoggedIn === true) {
+        isAuthenticated.value = true
+
+        await getrole()
+      } else {
+        isAuthenticated.value = false
+        role.value = null
+      }
     } catch (err) {
-      error.value = err.message
       isAuthenticated.value = false
       role.value = null
+      error.value = err.response?.data?.message || err.message || 'An error occurred'
+      throw err
     } finally {
       loading.value = false
     }
   }
 
-  async function login(credentials) {
+  async function signup(credentials) {
     loading.value = true
     error.value = null
 
     try {
-      const data = await authenticationService.login(credentials)
-      isAuthenticated.value = true
-      role.value = data.role
+      const data = await authenticationService.signup(
+        credentials.Name,
+        credentials.Email,              // Changed from UserEmail
+        credentials.Password,
+        credentials.UserBirthDate,
+        credentials.Gender || 1
+      )
+
+      // Signup successful, now get the user's role
+      await getrole()
+
       return data
     } catch (err) {
-      error.value = err.message
+      isAuthenticated.value = false
+      role.value = null
+      error.value = err.response?.data?.message || err.message || 'An error occurred'
+      throw err
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function signin(credentials) {
+    loading.value = true
+    error.value = null
+
+    try {
+      const data = await authenticationService.signin(
+        credentials.Email,
+        credentials.Password
+      )
+
+      // Signin successful, now get the user's role
+      await getrole()
+
+      return data
+    } catch (err) {
+      isAuthenticated.value = false
+      role.value = null
+      error.value = err.response?.data?.message || err.message || 'An error occurred'
       throw err
     } finally {
       loading.value = false
@@ -61,14 +130,19 @@ export const useAuthenticationStore = defineStore('auth', () => {
 
   async function signout() {
     try {
-      await authenticationService.logout()
+      await authenticationService.signout()
     } catch (err) {
-      console.error('Logout error:', err)
+      isAuthenticated.value = false
+      role.value = null
+      error.value = err.response?.data?.message || err.message || 'An error occurred'
+      throw err
     } finally {
       isAuthenticated.value = false
       role.value = null
     }
   }
+
+
 
   return {
     // State
@@ -85,7 +159,9 @@ export const useAuthenticationStore = defineStore('auth', () => {
     canAccessDev,
     // Actions
     checkAuthentication,
-    login,
+    signup,
+    signin,
     signout,
+    getrole,
   }
 })

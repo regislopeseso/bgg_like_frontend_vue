@@ -12,16 +12,15 @@
 
   onMounted(() => {
     authenticationStore.checkAuthentication()
-
   })
 
   // Define navigation items
   const navItems = computed(() => [
     { n: 1, id: '', route: "/", label: "Home",   show: true},
     { n: 2, id: '', route: "/explore", label: "Explore",  show: true},
-    { n: 3, id: '', route: "/user", label: "User",  show: true }, //authenticationStore.canAccessUser },
-    { n: 4, id: '', route: "/admin", label: "Admin",  show: true },//authenticationStore.canAccessAdmin },
-    { n: 5, id: '', route: "/dev", label: "Dev",  show: true }, //authenticationStore.canAccessDev },
+    { n: 3, id: '', route: "/user", label: "User",  show: authenticationStore.canAccessUser },
+    { n: 4, id: '', route: "/admin", label: "Admin",  show: authenticationStore.canAccessAdmin },
+    { n: 5, id: '', route: "/dev", label: "Dev",  show:authenticationStore.canAccessDev },
   ])
 
 </script>
@@ -30,6 +29,7 @@
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
       <LogoBrand />
+
       <button
         class="navbar-toggler navHamburger"
         type="button"
@@ -44,7 +44,6 @@
 
       <div class="collapse navbar-collapse" id="navbar-content">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
           <template v-for="item in navItems" :key="item.id" >
             <li class="nav-item">
               <RouterLink
@@ -56,7 +55,6 @@
               </RouterLink>
             </li>
           </template>
-
         </ul>
 
         <div class="d-flex flex-row justify-content-center align-items-center gap-5 pe-3">
