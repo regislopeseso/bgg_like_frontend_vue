@@ -1,8 +1,8 @@
 <script setup>
   import { useThemeStore } from '@/stores/themeStore'
   import BtnCloseX from '../buttons/BtnCloseX.vue'
-  import BtnBlueish from '../buttons/BtnBlueish.vue'
- 
+  import BtnCustom from '../buttons/BtnCustom.vue'
+
 
 
   const themeStore = useThemeStore()
@@ -26,7 +26,7 @@
 
 
         <div class="offcanvas-body d-flex flex-column align-items-center">
-          <BtnBlueish
+          <BtnCustom
             id="theme-toggler"
             class="btn-theme"
             aria-label="Toggle Theme"

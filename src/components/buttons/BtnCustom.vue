@@ -24,7 +24,7 @@
 
 <template>
   <button
-    class="btn btn-outline-warning"
+    class="btn"
     :data-bs-dismiss="dismiss"
     @click="handleClick"
     :disabled="disabled"
@@ -34,12 +34,8 @@
 </template>
 
 <style lang="scss" scoped>
-  .btn-outline-warning {
-  --bs-btn-color: var(--yellowish-color);
-  --bs-btn-disabled-color: var(--bg-color);
-  --bs-btn-disabled-border-color: var(--bg-color);
-  --bs-btn-hover-bg: var(--yellowish-color);
-  --bs-btn-hover-color: var(--bg-color)
+  .btn:hover {
+    color: var(--text-color);
+    box-shadow: 0 0 15px 1px var(--text-color);
   }
 </style>
-

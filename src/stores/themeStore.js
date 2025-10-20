@@ -23,8 +23,8 @@ export const useThemeStore = defineStore('theme', () => {
       document.documentElement.style.setProperty('--bg-color', 'rgb(200, 200, 210)')
       document.documentElement.style.setProperty('--second-bg-color', 'rgb(190, 190, 200)')
       document.documentElement.style.setProperty('--text-color', 'rgb(25, 25, 30)')
-      document.documentElement.style.setProperty('--blueish-color', 'rgb(0, 90, 100)')
       document.documentElement.style.setProperty('--reddish-color', 'rgb(200, 50, 30)')
+      document.documentElement.style.setProperty('--blueish-color', 'rgb(0, 90, 100)')
       document.documentElement.style.setProperty('--yellowish-color', 'rgb(200, 180, 0)')
       document.documentElement.style.setProperty('--greenish-color', 'rgb(0, 170, 110)')
 
