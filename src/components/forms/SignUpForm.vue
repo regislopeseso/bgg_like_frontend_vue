@@ -15,12 +15,12 @@ const gender = ref(1) // Default to first gender option
 const handleSubmit = async () => {
   // Validate required fields
   if (!name.value || !email.value || !password.value || !birthdate.value) {
-    emit('error', 'Validation error', 'All fields are required.')
+    emit('error', {title:'Validation error',message:'All fields are required.'})
     return
   }
 
   if (password.value !== confirmPassword.value) {
-    emit('error', 'Validation error', 'Passwords do not match.')
+    emit('error', {title:'Validation error',message:'Passwords do not match.'})
     return
   }
 
@@ -32,15 +32,15 @@ const handleSubmit = async () => {
       UserBirthDate: birthdate.value,
       Gender: gender.value
     })
-    emit('success', 'Account created', 'Your account was successfully registered!')
+    emit('success', {title:'Account created',message:'Your account was successfully registered!'})
   } catch (error) {
-    emit('error', 'Signup failed', authenticationStore.error || error.message)
+    emit('error', {title:'Signup failed',message:authenticationStore.error || error.message})
   }
 }
 </script>
 
 <template>
-  <form id="signUpBox" @submit.prevent="handleSubmit">
+  <form @submit.prevent="handleSubmit">
     <div class="mb-3">
       <input v-model="name" type="text" placeholder="Full Name" class="form-control" required />
     </div>

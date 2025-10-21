@@ -23,9 +23,10 @@ const props = defineProps({
   // New: Add more customization options
   allowOutsideClick: { type: Boolean, default: true },
   timer: { type: Number, default: null },
+  autoClose: { type: Boolean, default: true },
 })
 
-const emit = defineEmits(['update:show', 'confirm', 'cancel'])
+const emit = defineEmits(['update:show', 'confirm', 'cancel', 'closed'])
 
 // Store reference to prevent duplicate alerts
 let currentAlert = null
@@ -51,21 +52,44 @@ watch(
         cancelButtonColor: props.colorMap.cancel,
         allowOutsideClick: props.allowOutsideClick,
         timer: props.timer,
+        timerProgressBar: !!props.timer, // show a progress bar if timer is active
         customClass: {
           icon: 'swal2-custom-icon',
         },
+        didOpen: () => {
+          if(props.timer){
+            Swal.showLoading()
+          }
+        },
+        willClose: () => {
+
+        }
       })
 
       const result = await currentAlert
+
       currentAlert = null
 
       emit('update:show', false)
 
+      if (result.dismiss === Swal.DismissReason.timer && props.autoClose) {
+        emit('update:show', false)
+        emit('confirm') // or emit('cancel') depending on desired behavior
+        return
+      }
+
+
       if (result.isConfirmed) {
         emit('confirm')
       } else if (result.isDismissed) {
-        emit('cancel')
+        if (result.dismiss === Swal.DismissReason.timer && props.autoClose) {
+          emit('confirm') // or emit('cancel') if you prefer
+        } else {
+          emit('cancel')
+        }
       }
+
+      emit('closed')
     }
   }
 )

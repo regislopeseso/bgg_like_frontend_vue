@@ -1,142 +1,204 @@
 <script setup>
-  // --- Imports ---
-  import { ref, onMounted } from 'vue';
-  import SignUpForm from '@/components/forms/SignUpForm.vue';
-  import SignInForm from '@/components/forms/SignInForm.vue';
-  import Swal from 'sweetalert2'
+// --- Imports ---
+import { ref, onMounted, nextTick } from 'vue';
+import { useRouter } from 'vue-router'
+import SignUpForm from '@/components/forms/SignUpForm.vue';
+import SignInForm from '@/components/forms/SignInForm.vue';
+import SuccessAlert from '@/components/alerts/SuccessAlert.vue';
+import ErrorAlert from '@/components/alerts/ErrorAlert.vue';
 
-  import { useRouter } from 'vue-router'
-  const router = useRouter()
+const router = useRouter()
 
-  // --- State ---
-  const signUpOption = ref(false)
-  const welcomingText1 = ref('')
-  const welcomingText2 = ref('')
+// Template Refs
+const signInFormRef = ref(null)
+const signUpFormRef = ref(null)
 
-  // --- Functions ---
-  const redirectToUsersPage = () => {
-    router.push('/users')
-  }
-  const sweetAlertSuccess = (title, message) => {
-    Swal.fire({
-      position: 'center',
-      icon: 'success',
-      title,
-      text: message || '',
-      showConfirmButton: false,
-      timer: 1500,
-    }).then(() => redirectToUsersPage())
-  }
-  const sweetAlertError = (title, message) => {
-    let seconds = 5
-    const timer = setInterval(() => (seconds -= 1), 1000)
+// State
+const isNothingSelected = ref(true)
+const signInSelected = ref(false)
+const welcomingText1 = ref('')
+const welcomingText2 = ref('')
+const showForms = ref(false)
+const isAnimating = ref(false)
 
-    Swal.fire({
-      position: 'center',
-      icon: 'error',
-      title,
-      html: `
-        <div>
-          <p>${message || ''}</p>
-          <p>This window will close in <b>${seconds}</b>...</p>
-        </div>
-      `,
-      timer: seconds * 1000,
-      showCancelButton: true,
-      cancelButtonText: 'Close',
-      timerProgressBar: true,
-      willClose: () => clearInterval(timer),
-    })
-  }
+// Alert State
+const showSuccessAlert = ref(false)
+const showErrorAlert = ref(false)
+const alertTitle = ref('')
+const alertMessage = ref('')
 
-  // --- Typewriter Animation ---
-  const buildTypewriterEffect = () => {
-    welcomingText1.value = ''
-    welcomingText2.value = ''
-    const msg1 = 'Welcome visitor!'
-    const msg2 = 'What would you like to do'
-    let i = 0
-    let j = 0
+// Functions
+// Navigation function
+const redirectToUsersPage = () => {
+  router.push('/users')
+}
+// Success alert function
+function showSuccess({title, message}) {
+  alertTitle.value = title
+  alertMessage.value = message
+  showSuccessAlert.value = true
+}
+// Error alert function
+function showError({title, message}) {
+  alertTitle.value = title
+  alertMessage.value = message
+  showErrorAlert.value = true
+}
 
-    const typeFirst = () => {
-      if (i < msg1.length) {
-        welcomingText1.value += msg1.charAt(i)
-        i++
-        setTimeout(typeFirst, 25)
-      } else {
-        setTimeout(typeSecond, 10)
-      }
+const buildTypewriterEffect = () => {
+  welcomingText1.value = ''
+  welcomingText2.value = ''
+  const msg1 = 'Hello and Welcome!'
+  const msg2 = "Please sign in or sign up"
+  let i = 0
+  let j = 0
+
+  const typeFirst = () => {
+    if (i < msg1.length) {
+      welcomingText1.value += msg1.charAt(i)
+      i++
+      setTimeout(typeFirst, 25)
+    } else {
+      setTimeout(typeSecond, 10)
     }
-
-    const typeSecond = () => {
-      if (j < msg2.length) {
-        welcomingText2.value += msg2.charAt(j)
-        j++
-        setTimeout(typeSecond, 25)
-      }
-    }
-
-    typeFirst()
   }
 
-  onMounted(() => buildTypewriterEffect())
+  const typeSecond = () => {
+    if (j < msg2.length) {
+      welcomingText2.value += msg2.charAt(j)
+      j++
+      setTimeout(typeSecond, 25)
+    } else {
+      // Typewriter is done — wait a bit for visual pause
+      setTimeout(() => {
+        // Paint "Sign in" button as selected
+        isNothingSelected.value = false
+        signInSelected.value = true
+
+        setTimeout(() => {
+          showForms.value = true
+        },100)
+      }, 200)
+    }
+  }
+
+  typeFirst()
+}
+
+// Handle Sign Option Change
+const handleSignOptionChange = async (isSignIn) => {
+  if (isAnimating.value) return
+
+
+  // If clicking the already active button, do nothing
+  if (signInSelected.value === isSignIn) return
+
+  isAnimating.value = true
+
+  // Update selection
+  signInSelected.value = isSignIn
+
+  // Wait for form transition
+  await new Promise(resolve => setTimeout(resolve, 600))
+
+  // Focus on the appropriate input using template refs
+  await nextTick()
+  const formComponent = isSignIn ? signInFormRef.value : signUpFormRef.value
+
+  if (formComponent?.$el) {
+    const inputId = isSignIn ? 'signInEmail' : 'newUserName'
+    const inputElement = formComponent.$el.querySelector(`#${inputId}`)
+    inputElement?.focus()
+  }
+
+  isAnimating.value = false
+}
+
+// Lifecycle
+onMounted(() => buildTypewriterEffect())
 </script>
 
 <template>
-  <main id="user-authentication-page">
-    <section id="status-loggedOut">
-      <div class="d-flex flex-column align-items-center justify-content-center entryBox" id="welcomeTexts">
-        <div id="typewritter-texts" class="text-center no-select">
-          <h1>{{ welcomingText1 }}</h1>
-          <h3>{{ welcomingText2 }}</h3>
-        </div>
+  <div class="authentication-view">
+    <!-- Typewriter Message -->
+    <div
+      class="typewriter-texts text-center"
+    >
+      <h1>{{ welcomingText1 }}</h1>
+      <h3>{{ welcomingText2 }}</h3>
+    </div>
 
-        <div class="d-flex flex-row justify-content-center visitorOptions">
-          <button
-            id="signUp"
-            class="me-5 btn-authentication-options signUpOption no-select"
-            :class="{ active: signUpOption }"
-            @click="signUpOption = true"
-          >
-            <h1>Sign</h1>
-            <h1>Up <i class="bi bi-pencil-square"></i></h1>
-          </button>
+    <!-- Authentication Buttons -->
+    <div class="d-flex flex-row justify-content-center auth-buttons">
+      <button
+        class="me-5 btn-authentication-options sign-up-btn"
+        :class="{ active: !isNothingSelected && !signInSelected  }"
+        :disabled="isAnimating"
+        @click="handleSignOptionChange(false)"
+      >
+        <h1>Sign</h1>
+        <h1>Up <i class="bi bi-pencil-square"></i></h1>
+      </button>
 
-          <button
-            id="signIn"
-            class="btn-authentication-options signInOption no-select"
-            :class="{ active: !signUpOption }"
-            @click="signUpOption = false"
-          >
-            <h1>Sign</h1>
-            <h1>In <i class="bi bi-person-vcard"></i></h1>
-          </button>
-        </div>
-      </div>
+      <button
+        class="btn-authentication-options sign-in-btn"
+        :class="{ active: !isNothingSelected && signInSelected  }"
+        :disabled="isAnimating"
+        @click="handleSignOptionChange(true)"
+      >
+        <h1>Sign</h1>
+        <h1>In <i class="bi bi-person-vcard"></i></h1>
+      </button>
+    </div>
 
-      <div id="signing-options">
-        <SignUpForm
-          v-if="signUpOption"
-          @success="sweetAlertSuccess"
-          @error="sweetAlertError"
-        />
-
+    <!-- Sign in and Sign up forms -->
+    <div v-if="showForms" class="signing-options">
+      <Transition :name="signInSelected ? 'slide-from-right' : 'slide-from-left'" mode="out-in">
         <SignInForm
-          v-else
-          @success="sweetAlertSuccess"
-          @error="sweetAlertError"
+          v-if="signInSelected"
+          ref="signInFormRef"
+          key="signin"
+          @success="showSuccess"
+          @error="showError"
         />
-      </div>
-    </section>
-  </main>
+        <SignUpForm
+          v-else
+          ref="signUpFormRef"
+          key="signup"
+          @success="showSuccess"
+          @error="showError"
+        />
+      </Transition>
+    </div>
+
+    <!-- Alert Components -->
+    <SuccessAlert
+      v-model:show="showSuccessAlert"
+      :title="alertTitle"
+      :message="alertMessage"
+      :timer="2000"
+      :cancelButton="false"
+      @closed="redirectToUsersPage"
+    />
+
+    <ErrorAlert
+      v-model:show="showErrorAlert"
+      :title="alertTitle"
+      :cancelButton="false"
+      :message="alertMessage"
+    />
+  </div>
+
+
 </template>
 
-<style lang="scss" scoped>
-  main {
-  display: flex;
-  padding-top: 8rem;
-  justify-content: center;
-  align-items: center;
+<style lang="scss">
+  .authentication-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 2rem;
   }
 
   .btn-authentication-options {
@@ -146,24 +208,24 @@
     padding: 0;
     text-align: center;
     cursor: pointer;
+
+    &:disabled {
+      pointer-events: none;
+    }
   }
 
-  .no-select {
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10+ and Edge */
-    user-select: none; /* Standard syntax */
-  }
-
-  .signUpOption:hover,
-  .signInOption:hover {
-    color: var(--main-color);
+  .sign-up-btn:hover,
+  .sign-in-btn:hover {
+    color: var(--blueish-color);
     cursor: pointer;
-    transition: all 0.2s ease-in-out;
+    transition: all 0.3s ease-in-out;
   }
 
-  #signing-options {
+  .signing-options {
     display: flex;
+    justify-content: center;
     width: 25rem;
+    margin-top: 1rem;
   }
 
   #signUpBox,
@@ -175,8 +237,39 @@
   }
 
   .active {
-    color: var(--main-color);
+    color: var(--blueish-color);
     pointer-events: none;
   }
 
+  // Slide from left animation (for Sign Up)
+  .slide-from-left-enter-active ,
+  .slide-from-left-leave-active {
+    transition: all 0.3s ease;
+  }
+
+  .slide-from-left-enter-from {
+    opacity: 0;
+    transform: translateX(-50%);
+  }
+
+  .slide-from-left-leave-to {
+    opacity: 0;
+    transform: translateX(50%);
+  }
+
+  // Slide from right animation (for Sign In)
+  .slide-from-right-enter-active,
+  .slide-from-right-leave-active {
+    transition: all 0.3s ease;
+  }
+
+  .slide-from-right-enter-from {
+    opacity: 0;
+    transform: translateX(50%);
+  }
+
+  .slide-from-right-leave-to {
+    opacity: 0;
+    transform: translateX(-50%);
+  }
 </style>

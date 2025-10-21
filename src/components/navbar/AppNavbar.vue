@@ -104,7 +104,7 @@
   }
 
   .navbar a {
-    font-size: 1rem;
+    font-size: 1;
     color: var(--text-color);
     transition: 0.3s;
   }
@@ -130,32 +130,21 @@
     color: var(--blueish-color)
   }
 
-
-  #img-access-lifecounter img,
-  #img-access-lifecounter-mobile img {
+  #img-access-lifecounter img {
     filter: brightness(0) saturate(100%) invert(100%);
   }
 
-  #img-access-lifecounter-mobile {
-    display: flex;
-    justify-content: flex-end;
-    width: 50px;
-    height: 30px;
-  }
 
-  #img-access-lifecounter:hover img,
-  #img-access-lifecounter-mobile:hover img {
+  #img-access-lifecounter:hover img {
     filter: brightness(0) saturate(100%) invert(59%) sepia(85%) saturate(1462%) hue-rotate(146deg)
       brightness(101%) contrast(105%);
   }
 
-  #img-access-lifecounter.light-theme img,
-  #img-access-lifecounter-mobile.light-theme img {
+  #img-access-lifecounter.light-theme img {
     filter: brightness(0) saturate(100%) invert(13%) sepia(8%) saturate(2368%) hue-rotate(169deg)
       brightness(96%) contrast(92%);
   }
-  #img-access-lifecounter.light-theme:hover img,
-  #img-access-lifecounter-mobile.light-theme:hover img {
+  #img-access-lifecounter.light-theme:hover img {
     filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(162deg)
       brightness(94%) contrast(101%);
   }

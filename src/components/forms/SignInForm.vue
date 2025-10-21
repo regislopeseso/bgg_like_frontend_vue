@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useAuthenticationStore } from '@/stores/authenticationStore'
 
 const emit = defineEmits(['success', 'error'])
-const authStore = useAuthenticationStore()
+const authenticationStore = useAuthenticationStore()
 
 const email = ref('')
 const password = ref('')
@@ -11,24 +11,24 @@ const password = ref('')
 const handleSubmit = async () => {
   // Basic validation
   if (!email.value || !password.value) {
-    emit('error', 'Validation error', 'Email and password are required.')
+    emit('error', {title:'Validation error', message:'Email and password are required.'})
     return
   }
 
   try {
-    await authStore.signin({       // Changed from 'login' to 'signin'
+    await authenticationStore.signin({       // Changed from 'login' to 'signin'
       Email: email.value,          // Changed to PascalCase
       Password: password.value     // Changed to PascalCase
     })
-    emit('success', 'Login successful', 'Welcome back!')
+    emit('success', {title:'Login successful', message:'Welcome back!'})
   } catch (error) {
-    emit('error', 'Login failed', authStore.error || error.message)
+    emit('error', {title:'Login failed', message: authenticationStore.error || error.message})
   }
 }
 </script>
 
 <template>
-  <form id="signInBox" @submit.prevent="handleSubmit">
+  <form @submit.prevent="handleSubmit">
     <div class="mb-3">
       <input
         v-model="email"
@@ -50,9 +50,9 @@ const handleSubmit = async () => {
     <button
       type="submit"
       class="btn btn-outline-success w-100"
-      :disabled="authStore.loading"
+      :disabled="authenticationStore.loading"
     >
-      <span v-if="!authStore.loading">Sign In</span>
+      <span v-if="!authenticationStore.loading">Sign In</span>
       <span v-else>Loading...</span>
     </button>
   </form>

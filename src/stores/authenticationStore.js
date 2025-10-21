@@ -87,11 +87,22 @@ export const useAuthenticationStore = defineStore('auth', () => {
         credentials.Password
       )
 
+      if(data.content?.remainingSignInAttempts !== null && data.content?.remainingSignInAttempts !== undefined){
+        const fullMessage = `${data.message}`
+
+        error.value = fullMessage
+        isAuthenticated.value = false
+        role.value = null
+        throw new Error(fullMessage)
+      }
+
+
       // Signin successful, now get the user's role
       await checkAuthentication()
 
       return data
     } catch (err) {
+      // Network or server errors
       isAuthenticated.value = false
       role.value = null
       error.value = err.response?.data?.message || err.message || 'An error occurred'
