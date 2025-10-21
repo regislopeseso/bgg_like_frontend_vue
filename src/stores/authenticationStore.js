@@ -25,33 +25,6 @@ export const useAuthenticationStore = defineStore('auth', () => {
   const canAccessDev = computed(() => role.value === 'Developer')
 
   // Actions
-  async function getrole() {
-    loading.value = true
-    error.value = null
-
-    try {
-      const data = await authenticationService.getrole()
-
-      // Update authentication state based on response
-      if (data.content && data.content.role) {
-        isAuthenticated.value = true
-        role.value = data.content.role
-      } else {
-        isAuthenticated.value = false
-        role.value = null
-      }
-
-      return data
-    } catch (err) {
-      isAuthenticated.value = false
-      role.value = null
-      error.value = err.response?.data?.message || err.message || 'Failed to get role'
-      throw err
-    } finally {
-      loading.value = false
-    }
-  }
-
   async function checkAuthentication() {
     loading.value = true
     error.value = null
@@ -62,7 +35,7 @@ export const useAuthenticationStore = defineStore('auth', () => {
       if(data.content && data.content.isUserLoggedIn === true) {
         isAuthenticated.value = true
 
-        await getrole()
+        role.value = data.content.role
       } else {
         isAuthenticated.value = false
         role.value = null
@@ -91,7 +64,7 @@ export const useAuthenticationStore = defineStore('auth', () => {
       )
 
       // Signup successful, now get the user's role
-      await getrole()
+      await checkAuthentication()
 
       return data
     } catch (err) {
@@ -115,7 +88,7 @@ export const useAuthenticationStore = defineStore('auth', () => {
       )
 
       // Signin successful, now get the user's role
-      await getrole()
+      await checkAuthentication()
 
       return data
     } catch (err) {
@@ -143,7 +116,6 @@ export const useAuthenticationStore = defineStore('auth', () => {
   }
 
 
-
   return {
     // State
     isAuthenticated,
@@ -162,6 +134,5 @@ export const useAuthenticationStore = defineStore('auth', () => {
     signup,
     signin,
     signout,
-    getrole,
   }
 })

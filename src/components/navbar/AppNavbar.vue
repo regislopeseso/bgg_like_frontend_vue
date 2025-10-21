@@ -1,5 +1,5 @@
 <script setup>
-  import { onMounted, computed } from 'vue'
+  import {  computed } from 'vue'
   import { useAuthenticationStore } from '@/stores/authenticationStore'
   import { useThemeStore } from '@/stores/themeStore'
   import LogoBrand from './LogoBrand.vue'
@@ -10,9 +10,7 @@
   const themeStore = useThemeStore()
   const authenticationStore = useAuthenticationStore()
 
-  onMounted(() => {
-    authenticationStore.checkAuthentication()
-  })
+
 
   // Define navigation items
   const navItems = computed(() => [

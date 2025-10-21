@@ -35,18 +35,11 @@ export const authenticationService = {
   },
 
   async signout() {
-    const response = await axios.post(`${API_BASE_URL}/users/signout`, {}, {
+    const response = await axios.post(`${API_BASE_URL}/users/signoutuser`, {}, {
       withCredentials: true
     })
 
     console.log("Trying to sign out, response.data is:",response.data)
     return response.data
   },
-
-  async getrole() {
-    const response = await axios.get(`${API_BASE_URL}/users/getrole`, {
-      withCredentials: true
-    })
-    return response.data
-  }
 }
