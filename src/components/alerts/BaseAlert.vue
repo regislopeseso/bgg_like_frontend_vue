@@ -34,65 +34,67 @@ let currentAlert = null
 watch(
   () => props.show,
   async (newVal) => {
-    if (newVal) {
-      // Close existing alert if any
-      if (currentAlert) {
-        Swal.close()
-      }
+    if (!newVal) return
 
-      currentAlert = Swal.fire({
-        title: props.title,
-        html: props.message,
-        icon: props.icon,
-        showConfirmButton: props.confirmButton,
-        confirmButtonText: props.confirmText,
-        showCancelButton: props.cancelButton,
-        cancelButtonText: props.cancelText,
-        confirmButtonColor: props.colorMap.confirm,
-        cancelButtonColor: props.colorMap.cancel,
-        allowOutsideClick: props.allowOutsideClick,
-        timer: props.timer,
-        timerProgressBar: !!props.timer, // show a progress bar if timer is active
-        customClass: {
-          icon: 'swal2-custom-icon',
-        },
-        didOpen: () => {
-          if(props.timer){
-            Swal.showLoading()
-          }
-        },
-        willClose: () => {
+    // Close any open alert
+    if (currentAlert) Swal.close()
 
+    let timerInterval
+    let remainingSeconds = props.timer ? props.timer / 1000 : null
+
+    // Build base HTML (adds countdown only if timer active)
+    const html = props.timer
+      ? `
+        <div>
+          <p>${props.message}</p>
+          <p style="margin-top: 10px; font-size: 0.9rem;">
+            This window will close in <b>${remainingSeconds}</b> seconds...
+          </p>
+        </div>
+      `
+      : props.message
+
+    currentAlert = Swal.fire({
+      title: props.title,
+      html,
+      icon: props.icon,
+      showConfirmButton: props.confirmButton,
+      confirmButtonText: props.confirmText,
+      showCancelButton: props.cancelButton,
+      cancelButtonText: props.cancelText,
+      confirmButtonColor: props.colorMap.confirm,
+      cancelButtonColor: props.colorMap.cancel,
+      allowOutsideClick: props.allowOutsideClick,
+      timer: props.timer,
+      timerProgressBar: !!props.timer,
+      customClass: { icon: 'swal2-custom-icon' },
+      didOpen: () => {
+        if (props.timer) {
+          const content = Swal.getHtmlContainer().querySelector("b")
+          timerInterval = setInterval(() => {
+            remainingSeconds--
+            if (content) content.textContent = remainingSeconds
+          }, 1000)
         }
-      })
-
-      const result = await currentAlert
-
-      currentAlert = null
-
-      emit('update:show', false)
-
-      if (result.dismiss === Swal.DismissReason.timer && props.autoClose) {
-        emit('update:show', false)
-        emit('confirm') // or emit('cancel') depending on desired behavior
-        return
+      },
+      willClose: () => {
+        clearInterval(timerInterval)
+        emit('closed') // always emit closed
       }
+    })
 
+    const result = await currentAlert
+    currentAlert = null
+    emit('update:show', false)
 
-      if (result.isConfirmed) {
-        emit('confirm')
-      } else if (result.isDismissed) {
-        if (result.dismiss === Swal.DismissReason.timer && props.autoClose) {
-          emit('confirm') // or emit('cancel') if you prefer
-        } else {
-          emit('cancel')
-        }
-      }
-
-      emit('closed')
+    if (result.isConfirmed) {
+      emit('confirm')
+    } else if (result.dismiss === Swal.DismissReason.timer && props.autoClose) {
+      emit('confirm') // or 'cancel' if you prefer
     }
   }
 )
+
 </script>
 
 <template>

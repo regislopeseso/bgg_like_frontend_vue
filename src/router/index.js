@@ -15,7 +15,7 @@ const routes = [
   {
     path: '/lifecounter',
     name: 'lifecounter',
-    component: () => import('@/views/LifecounterView.vue'),
+    component: () => import('@/views/LifeCounterView.vue'),
   },
   {
     path: '/authentication',

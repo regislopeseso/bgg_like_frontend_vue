@@ -30,7 +30,7 @@ const alertMessage = ref('')
 // Functions
 // Navigation function
 const redirectToUsersPage = () => {
-  router.push('/users')
+  router.push('/user')
 }
 // Success alert function
 function showSuccess({title, message}) {
@@ -176,7 +176,8 @@ onMounted(() => buildTypewriterEffect())
       v-model:show="showSuccessAlert"
       :title="alertTitle"
       :message="alertMessage"
-      :timer="2000"
+      :timer="5000"
+      :confirmButton="true"
       :cancelButton="false"
       @closed="redirectToUsersPage"
     />

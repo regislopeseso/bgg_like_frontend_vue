@@ -24,6 +24,7 @@ defineEmits(['update:show', 'confirm'])
     }"
     @update:show="$emit('update:show', $event)"
     @confirm="$emit('confirm')"
+    @closed="$emit('closed')"
   />
 </template>
 
