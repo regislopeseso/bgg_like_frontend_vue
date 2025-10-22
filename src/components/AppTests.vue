@@ -1,8 +1,8 @@
 <script setup>
+  import { ref } from 'vue'
   import BtnCloseX from './buttons/BtnCloseX.vue'
   import BtnOutline from './buttons/BtnOutline.vue'
 
-  import { ref } from 'vue'
   import InfoAlert from './alerts/InfoAlert.vue'
   import ErrorAlert from './alerts/ErrorAlert.vue'
   import WarningAlert from './alerts/WarningAlert.vue'

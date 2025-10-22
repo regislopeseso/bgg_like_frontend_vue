@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useAuthenticationStore } from '@/stores/authenticationStore'
+import ContentLoader from '../loaders/ContentLoader.vue'
 
 const emit = defineEmits(['success', 'error'])
 const authenticationStore = useAuthenticationStore()
@@ -28,32 +29,42 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit">
-    <div class="mb-3">
-      <input
-        v-model="email"
-        type="email"
-        placeholder="Email"
-        required
-        class="form-control"
-      />
-    </div>
-    <div class="mb-3">
-      <input
-        v-model="password"
-        type="password"
-        placeholder="Password"
-        required
-        class="form-control"
-      />
-    </div>
-    <button
-      type="submit"
-      class="btn btn-outline-success w-100"
-      :disabled="authenticationStore.loading"
-    >
-      <span v-if="!authenticationStore.loading">Sign In</span>
-      <span v-else>Loading...</span>
-    </button>
-  </form>
+  <div class="form-wrapper">
+    <ContentLoader :show="authenticationStore.loading" />
+
+    <form @submit.prevent="handleSubmit">
+      <div class="mb-3">
+        <input
+          v-model="email"
+          type="email"
+          placeholder="Email"
+          required
+          class="form-control"
+        />
+      </div>
+      <div class="mb-3">
+        <input
+          v-model="password"
+          type="password"
+          placeholder="Password"
+          required
+          class="form-control"
+        />
+      </div>
+      <button
+        type="submit"
+        class="btn btn-outline-success w-100"
+        :disabled="authenticationStore.loading"
+      >
+        <span v-if="!authenticationStore.loading">Sign In</span>
+        <span v-else>Loading...</span>
+      </button>
+    </form>
+  </div>
 </template>
+
+<style scoped>
+  .form-wrapper {
+    position: relative;
+  }
+</style>

@@ -61,10 +61,10 @@
       <i class="bi bi-person-gear"></i>
     </a>
 
-    <ul id="ul-profile-configurations" class="dropdown-menu">
+    <ul id="ul-profile-configurations" class="dropdown-menu dropdown-menu-end">
       <template
         v-for="item in profileMenuItems"
-        :key="item.id"
+        :key="item.id || 'divider'"
       >
         <li
           v-if="item.divider"

@@ -78,31 +78,31 @@ export const useAuthenticationStore = defineStore('auth', () => {
   }
 
   async function signin(credentials) {
-  loading.value = true
-  error.value = null
+    loading.value = true
+    error.value = null
 
-  try {
-    const data = await authenticationService.signin(
-      credentials.Email,
-      credentials.Password
-    )
+    try {
+      const data = await authenticationService.signin(
+        credentials.Email,
+        credentials.Password
+      )
 
-    // Sign-in successful
-    await checkAuthentication()
+      // Sign-in successful
+      await checkAuthentication()
 
-    return data
-  } catch (err) {
-    isAuthenticated.value = false
-    role.value = null
+      return data
+    } catch (err) {
+      isAuthenticated.value = false
+      role.value = null
 
-    // Simply use the error message from the backend
-    error.value = err.response?.data?.message || err.message || 'An error occurred during sign-in.'
+      // Simply use the error message from the backend
+      error.value = err.response?.data?.message || err.message || 'An error occurred during sign-in.'
 
-    throw err
-  } finally {
-    loading.value = false
+      throw err
+    } finally {
+      loading.value = false
+    }
   }
-}
 
   async function signout() {
     try {

@@ -24,7 +24,7 @@
 </script>
 
 <template>
-  <nav class="navbar navbar-expand-lg">
+  <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container-fluid">
       <LogoBrand />
 
@@ -53,10 +53,8 @@
               </RouterLink>
             </li>
           </template>
-        </ul>
 
-        <div class="d-flex flex-row justify-content-center align-items-center gap-5 pe-3">
-          <div class="nav-item">
+          <li class="nav-item">
             <RouterLink
               id="img-access-lifecounter"
               to="/lifecounter"
@@ -64,21 +62,24 @@
             >
               <img src="/images/navbar/lifecounter_white.png" alt="">
             </RouterLink>
-          </div>
+          </li>
 
-          <template v-if="!authenticationStore.isAuthenticated">
-            <RouterLink
-              class="nav-item"
-              to="/authentication"
-            >
-              Sign Up/In
-            </RouterLink>
-          </template>
-          <template v-else>
-            <ProfileDropdown />
-          </template>
+          <li class="nav-item">
+            <template v-if="!authenticationStore.isAuthenticated">
+              <RouterLink
+                class="nav-item"
+                to="/authentication"
+              >
+                Sign Up/In
+              </RouterLink>
+            </template>
 
-          <div class="nav-item">
+            <template v-else>
+              <ProfileDropdown />
+            </template>
+          </li>
+
+          <li class="nav-tem">
             <a
               class="nav-link"
               style="text-decoration: none"
@@ -88,10 +89,8 @@
             >
               <i class="bi bi-gear"></i>
             </a>
-          </div>
-        </div>
-
-
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
@@ -101,6 +100,21 @@
 <style lang="scss">
   nav{
     background-color: var(--second-bg-color);
+  }
+
+  .navbar-nav{
+    align-items: center;
+    gap: 1rem;
+  }
+
+  @media screen and (max-width: 992px) {
+    .navbar-nav{
+      align-items: start;
+    }
+  }
+
+  .navbar-collapse{
+    flex-grow: 0 !important;
   }
 
   .navbar a {
