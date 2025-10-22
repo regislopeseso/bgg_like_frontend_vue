@@ -10,8 +10,6 @@
   const themeStore = useThemeStore()
   const authenticationStore = useAuthenticationStore()
 
-
-
   // Define navigation items
   const navItems = computed(() => [
     { n: 1, id: '', route: "/", label: "Home",   show: true},
@@ -107,9 +105,33 @@
     gap: 1rem;
   }
 
+  .navbar-toggler{
+    border: 1px solid var(--text-color);
+    opacity: 0.7;
+    transition: all 0.2s;
+  }
+  .navbar-toggler:hover{
+    opacity: 1;
+    border: 1px solid var(--blueish-color);
+  }
+
+  .navbar-toggler-icon{
+    filter: var(--text-filter);
+    opacity: 0.7 ;
+    transition: opacity 0.2s;
+  }
+  .navbar-toggler:hover .navbar-toggler-icon{
+    filter: var(--blueish-filter);
+    opacity: 1;
+  }
+  .navbar-toggler:focus{
+    box-shadow: none;
+  }
+
   @media screen and (max-width: 992px) {
     .navbar-nav{
       align-items: start;
+      gap: 0.1rem;
     }
   }
 
