@@ -23,12 +23,12 @@
 <template>
   <div class="app-container">
     <AppNavbar />
+
     <main class="main-content">
       <ContentLoader :show="isRouteLoading" fixed />
+
       <RouterView />
     </main>
-
-
   </div>
 </template>
 

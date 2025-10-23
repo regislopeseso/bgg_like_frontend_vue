@@ -28,6 +28,14 @@ body {
   color: var(--text-color);
 }
 
+hr {
+  opacity: 0.7;
+}
+
+.blueish-letter{
+  color: var(--blueish-color);
+}
+
 
 
 /*

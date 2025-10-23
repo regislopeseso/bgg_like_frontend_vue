@@ -45,7 +45,7 @@
   --bs-btn-disabled-color: var(--bg-color);
   --bs-btn-disabled-border-color: var(--bg-color);
   --bs-btn-hover-bg: var(--blueish-color);
-  --bs-btn-hover-color: var(--bg-color)
+  --bs-btn-hover-color: var(--second-bg-color)
   }
 
   .btn-outline-danger {
@@ -53,7 +53,7 @@
   --bs-btn-disabled-color: var(--bg-color);
   --bs-btn-disabled-border-color: var(--bg-color);
   --bs-btn-hover-bg: var(--reddish-color);
-  --bs-btn-hover-color: var(--bg-color)
+  --bs-btn-hover-color: var(--second-bg-color)
   }
 
   .btn-outline-warning {
@@ -61,7 +61,7 @@
   --bs-btn-disabled-color: var(--bg-color);
   --bs-btn-disabled-border-color: var(--bg-color);
   --bs-btn-hover-bg: var(--yellowish-color);
-  --bs-btn-hover-color: var(--bg-color)
+  --bs-btn-hover-color: var(--second-bg-color)
   }
 
   .btn-outline-success {
@@ -69,6 +69,6 @@
   --bs-btn-disabled-color: var(--bg-color);
   --bs-btn-disabled-border-color: var(--bg-color);
   --bs-btn-hover-bg: var(--greenish-color);
-  --bs-btn-hover-color: var(--bg-color)
+  --bs-btn-hover-color: var(--second-bg-color)
   }
 </style>

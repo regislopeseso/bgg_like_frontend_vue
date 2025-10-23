@@ -8,7 +8,7 @@ const props = defineProps({
   confirmText: { type: String, default: 'OK' },
 })
 
-defineEmits(['update:show', 'confirm'])
+defineEmits(['update:show', 'confirm', 'closed'])
 </script>
 
 <template>

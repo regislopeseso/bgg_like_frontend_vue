@@ -8,7 +8,7 @@ const props = defineProps({
   confirmText: { type: String, default: 'OK' },
 })
 
-defineEmits(['update:show', 'confirm'])
+defineEmits(['update:show', 'confirm', 'closed'])
 </script>
 
 <template>
@@ -24,6 +24,7 @@ defineEmits(['update:show', 'confirm'])
     }"
     @update:show="$emit('update:show', $event)"
     @confirm="$emit('confirm')"
+    @closed="$emit('closed')"
   />
 </template>
 

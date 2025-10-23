@@ -7,7 +7,9 @@
   import EmailInput from '../inputs/EmailInput.vue'
   import PasswordInput from '../inputs/PasswordInput.vue'
   import DateInput from '../inputs/DateInput.vue'
+  import BaseRadioGroup from '../inputs/BaseRadioGroup.vue'
   import RadioInput from '../inputs/RadioInput.vue'
+  import BtnOutline from '../buttons/BtnOutline.vue'
 
   const emit = defineEmits(['success', 'error'])
   const authenticationStore = useAuthenticationStore()
@@ -17,12 +19,12 @@
   const password = ref('')
   const confirmPassword = ref('')
   const birthdate = ref('')
-  const gender = ref(1)
-  const showErrors = ref(false)
+  const gender = ref(null)
+  const showWarning = ref(false)
 
   const handleSubmit = async () => {
     // Show errors on all fields
-    showErrors.value = true
+    showWarning.value = true
 
     // Validate required fields
     if (!name.value || !email.value || !password.value || !birthdate.value) {
@@ -44,7 +46,7 @@
         Gender: gender.value
       })
       emit('success', {title:'Account created', message:'Your account was successfully registered!'})
-      showErrors.value = false // Reset after successful submission
+      showWarning.value = false // Reset after successful submission
     } catch (error) {
       emit('error', {title:'Signup failed', message:authenticationStore.error || error.message})
     }
@@ -58,7 +60,7 @@
         v-model.trim="name"
         name="Name"
         :isRequired="true"
-        :showError="showErrors"
+        :showWarning="showWarning"
         placeholderText="Type in your name"
       />
     </div>
@@ -70,7 +72,7 @@
         v-model="email"
         name="Email"
         :isRequired="true"
-        :showError="showErrors"
+        :showWarning="showWarning"
         placeholderText="Type in your email"
       />
     </div>
@@ -82,16 +84,16 @@
         v-model="password"
         name="Password"
         :isRequired="true"
-        :showError="showErrors"
+        :showWarning="showWarning"
         placeholderText="Create a password"
       />
     </div>
     <div class="mb-3">
       <PasswordInput
-        v-model="password"
+        v-model="confirmPassword"
         name="Password Confirmation"
         :isRequired="true"
-        :showError="showErrors"
+        :showWarning="showWarning"
         placeholderText="Confirm your password"
       />
     </div>
@@ -101,32 +103,44 @@
     <div class="mb-3">
        <DateInput
         v-model="birthdate"
-        name="Date of Birth"
+        name="Birth Date"
         :isRequired="true"
-        :showError="showErrors"
+        :showWarning="showWarning"
       />
     </div>
 
     <hr />
 
     <div class="mb-3">
-      <div class="form-check form-check-inline">
+      <BaseRadioGroup
+        v-model="gender"
+        name="gender"
+        label="Gender"
+        :inline="true"
+      >
         <RadioInput
           v-model="gender"
-          name="Male"
+          name="gender"
+          :value="1"
+          label="Male"
         />
         <RadioInput
           v-model="gender"
-          name="Female"
+          name="gender"
+          :value="2"
+          label="Female"
         />
-      </div>
+      </BaseRadioGroup>
     </div>
 
     <hr />
 
-    <button type="submit" class="btn btn-outline-info w-100" :disabled="authenticationStore.loading">
-      <span v-if="!authenticationStore.loading">Sign Up</span>
-      <span v-else>Loading...</span>
-    </button>
+    <BtnOutline
+      class="d-flex w-100 justify-content-center"
+      type="submit"
+      variant="info"
+      :disabled="authenticationStore.loading"
+      :buttonText="authenticationStore.loading ? 'Loading...' : 'Sign Up'"
+    />
   </BaseForm>
 </template>

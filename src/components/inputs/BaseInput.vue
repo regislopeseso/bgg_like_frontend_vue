@@ -1,26 +1,32 @@
 <!-- BaseInput.vue component -->
 <script setup>
-  import { computed } from 'vue';
+  import { ref, computed, useId } from 'vue';
 
   const props = defineProps({
+    id: { type: String, default: '' },
     modelValue: [String, Number],
     name: { type: String, default: '' },
     type: { type: String, default: 'text' },
     placeholder: { type: String, default: '' },
     isRequired: { type: Boolean, default: false },
-    showError: { type: Boolean, default: false },
-    warningMessage: { type: String, default: 'This field is required' }
+    showWarning: { type: Boolean, default: false },
+    warningMessage: { type: String, default: 'This field is required' },
+    disabled: { type: Boolean, default: false }
   });
 
   const emit = defineEmits(['update:modelValue', 'validation-error', 'blur']);
 
-  // Compute if the input has an error
-  const hasError = computed(() => props.isRequired && props.showError && !props.modelValue);
+  // Generate or use provided ID
+  const inputId = props.id || useId();
 
-  // Compute tooltip message
-  const tooltipMessage = computed(() =>
-    props.isRequired ? 'This field is required' : 'This field is optional'
-  );
+  // Track if the input has been touched
+  const touched = ref(false);
+
+  // Compute if the input has an error
+  const hasWarning = computed(() => touched.value && props.isRequired && props.showWarning && !props.modelValue);
+  const hasSuccess = computed(() => touched.value && String(props.modelValue).length > 0);
+
+
 
   // Validate on blur or when form attempts to submit
   const validate = () => {
@@ -33,30 +39,70 @@
 
   // Handle blur event
   const handleBlur = () => {
+    touched.value = true;
     emit('blur');
   };
 
   // Expose validate method for parent components
   defineExpose({ validate });
+
+  const coloredLabel = computed(() => {
+    if(!props.name) return '';
+
+    return props.name
+      .split(' ')
+      .map(word => {
+        if(!word) return '';
+
+       return `<span class="blueish-letter">${word[0].toUpperCase()}</span>${word.slice(1).toLowerCase()}`;
+      })
+      .join(' ');
+  })
+
+  // mudar o metodo abaixo para o text input!
+  const getInputClass = computed(() => {
+    switch (true) {
+      case hasWarning.value:
+        return String(' border-error');
+      case hasSuccess.value:
+        return String('border-success');
+      default:
+        return '';
+    }
+  })
+
 </script>
 
 <template>
   <div class="base-input-wrapper">
-    <label v-if="name">{{ name }}</label>
+    <label
+      v-if="name"
+      :for="inputId"
+      v-html="coloredLabel"
+    />
+
     <div class="input-container">
       <input
-        class="form-control"
+        :id="inputId"
+        :aria-required="isRequired"
+        :aria-invalid="hasWarning"
+        :aria-describedby="hasWarning ? `${inputId}-error` : undefined"
         :name="name"
-        :class="{ 'border-error': hasError }"
+        :class="['form-control', getInputClass]"
         :type="type"
         :placeholder="placeholder"
         :value="modelValue"
+        :disabled="disabled"
         @input="emit('update:modelValue', $event.target.value)"
         @blur="handleBlur"
       >
-      <span class="tooltip-text">{{ tooltipMessage }}</span>
     </div>
-    <span v-if="hasError" class="error-message">
+
+    <span
+      v-if="hasWarning"
+      :id="`${inputId}-error`"
+      class="warning-message"
+    >
       {{ warningMessage }}
     </span>
   </div>
@@ -81,7 +127,7 @@
         width: 100%;
         transition: all 0.3s ease;
 
-        &:hover {
+        &:not(:disabled):hover {
           box-shadow: 0 0 5px 5px var(--blueish-color) !important;
         }
 
@@ -93,45 +139,15 @@
           border: 1px solid var(--reddish-color) !important;
           box-shadow: 0 0 4px 4px var(--reddish-color) !important;
         }
-      }
 
-      .tooltip-text {
-        visibility: hidden;
-        opacity: 0;
-        background-color: rgba(0, 0, 0, 0.8);
-        color: #fff;
-        text-align: center;
-        padding: 0.5rem 0.75rem;
-        border-radius: 4px;
-        position: absolute;
-        z-index: 1000;
-        bottom: 125%;
-        left: 50%;
-        transform: translateX(-50%);
-        white-space: nowrap;
-        font-size: 0.875rem;
-        transition: opacity 0.3s, visibility 0.3s;
-        pointer-events: none;
-
-        &::after {
-          content: '';
-          position: absolute;
-          top: 100%;
-          left: 50%;
-          transform: translateX(-50%);
-          border-width: 5px;
-          border-style: solid;
-          border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+        &.border-success {
+          border: 1px solid var(--greenish-color) !important;
+          box-shadow: 0 0 4px 4px var(--greenish-color);
         }
-      }
-
-      &:hover .tooltip-text {
-        visibility: visible;
-        opacity: 1;
       }
     }
 
-    .error-message {
+    .warning-message {
       color: var(--reddish-color);
       font-size: 0.85rem;
       margin-top: 0.25rem;
