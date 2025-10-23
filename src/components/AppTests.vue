@@ -35,7 +35,7 @@
 </script>
 
 <template>
-  <div class="d-flex flex-row gap-3">
+  <div class="d-flex flex-row gap-3 pt-5">
     <div>
       <BtnCloseX
         class="m-5"
