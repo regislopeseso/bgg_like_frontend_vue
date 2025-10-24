@@ -35,7 +35,7 @@ export const authenticationService = {
   },
 
   async signout() {
-    const response = await axios.post(`${API_BASE_URL}/users/signoutuser`, {}, {
+    const response = await axios.post(`${API_BASE_URL}/users/signoutuser`, null, {
       withCredentials: true
     })
 

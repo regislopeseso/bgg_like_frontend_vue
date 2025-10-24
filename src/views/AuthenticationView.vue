@@ -1,3 +1,4 @@
+<!-- AuthenticationView.vue component -->
 <script setup>
 // --- Imports ---
 import { ref, onMounted, nextTick } from 'vue';
@@ -199,7 +200,7 @@ onMounted(() => buildTypewriterEffect())
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-top: 2rem;
+    padding-top: 5rem;
   }
 
   .btn-authentication-options {

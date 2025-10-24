@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { authenticationService } from '@/services/authenticationService'
+import router from '@/router'
 
 export const useAuthenticationStore = defineStore('auth', () => {
   // State
@@ -105,16 +106,28 @@ export const useAuthenticationStore = defineStore('auth', () => {
   }
 
   async function signout() {
+    loading.value = true
+    error.value = null
+
     try {
-      await authenticationService.signout()
+      const response = await authenticationService.signout()
+
+      if(response.content?.isUserSignOut === true) {
+        return true
+      } else {
+        throw new Error(response.message ||'Signing out failed')
+      }
     } catch (err) {
-      isAuthenticated.value = false
-      role.value = null
       error.value = err.response?.data?.message || err.message || 'An error occurred'
+
       throw err
     } finally {
-      isAuthenticated.value = false
-      role.value = null
+        isAuthenticated.value = false
+        role.value = null
+        loading.value = false
+
+        // Redirect to login or home page
+        router.push('/')
     }
   }
 

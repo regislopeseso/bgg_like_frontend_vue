@@ -23,7 +23,7 @@
   const touched = ref(false);
 
   // Compute if the input has an error
-  const hasWarning = computed(() => touched.value && props.isRequired && props.showWarning && !props.modelValue);
+  const hasWarning = computed(() => touched.value && props.isRequired && !props.modelValue);
   const hasSuccess = computed(() => touched.value && String(props.modelValue).length > 0);
 
 
@@ -127,22 +127,30 @@
         width: 100%;
         transition: all 0.3s ease;
 
+        &:disabled{
+          border: 1px solid var(--bg-color);
+          background-color: var(--second-bg-color);
+        }
+
+        &:disabled::placeholder {
+          font-style: italic !important;
+          text-decoration: line-through;
+        }
+
         &:not(:disabled):hover {
-          box-shadow: 0 0 5px 5px var(--blueish-color) !important;
+          box-shadow: 0 0 5px 3px var(--blueish-color) !important;
         }
 
         &:focus {
-          box-shadow: 0 0 5px 5px var(--blueish-color) !important;
+          box-shadow: 0 0 5px 3px var(--blueish-color) !important;
         }
 
         &.border-error {
-          border: 1px solid var(--reddish-color) !important;
-          box-shadow: 0 0 4px 4px var(--reddish-color) !important;
+          box-shadow: 0 0 5px 3px var(--reddish-color) !important;
         }
 
         &.border-success {
-          border: 1px solid var(--greenish-color) !important;
-          box-shadow: 0 0 4px 4px var(--greenish-color);
+          box-shadow: 0 0 5px 3px var(--greenish-color);
         }
       }
     }
@@ -150,7 +158,7 @@
     .warning-message {
       color: var(--reddish-color);
       font-size: 0.85rem;
-      margin-top: 0.25rem;
+      margin-top: 0.5rem;
       display: block;
     }
   }

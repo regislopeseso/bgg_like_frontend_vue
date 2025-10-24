@@ -1,7 +1,8 @@
 <!-- SignUpForm.vue component -->
 <script setup>
-  import { ref } from 'vue'
+  import { ref, computed } from 'vue'
   import { useAuthenticationStore } from '@/stores/authenticationStore'
+  import ContentLoader from '../loaders/ContentLoader.vue'
   import BaseForm from './BaseForm.vue'
   import TextInput from '../inputs/TextInput.vue'
   import EmailInput from '../inputs/EmailInput.vue'
@@ -23,7 +24,7 @@
   const showWarning = ref(false)
 
   const handleSubmit = async () => {
-    // Show errors on all fields
+    // Show warnings on all fields
     showWarning.value = true
 
     // Validate required fields
@@ -51,11 +52,22 @@
       emit('error', {title:'Signup failed', message:authenticationStore.error || error.message})
     }
   }
+
+  const isFormFilled = computed(() => {
+    return String(name.value).trim().length > 0 &&
+      String(email.value).trim().length > 0 &&
+      String(password.value).trim().length > 0 &&
+      String(confirmPassword.value).trim().length > 0 &&
+      String(birthdate.value).trim().length > 0 &&
+      String(gender.value).trim().length > 0
+  });
 </script>
 
 <template>
-  <BaseForm @submit="handleSubmit">
-    <div class="mb-3">
+  <div>
+    <ContentLoader :show="authenticationStore.loading" />
+
+    <BaseForm @submit="handleSubmit">
       <TextInput
         v-model.trim="name"
         name="Name"
@@ -63,11 +75,9 @@
         :showWarning="showWarning"
         placeholderText="Type in your name"
       />
-    </div>
 
-    <hr />
+      <hr />
 
-    <div class="mb-3">
       <EmailInput
         v-model="email"
         name="Email"
@@ -75,20 +85,18 @@
         :showWarning="showWarning"
         placeholderText="Type in your email"
       />
-    </div>
 
-    <hr />
+      <hr />
 
-    <div class="mb-3">
       <PasswordInput
+        class="pb-3"
         v-model="password"
         name="Password"
         :isRequired="true"
         :showWarning="showWarning"
         placeholderText="Create a password"
       />
-    </div>
-    <div class="mb-3">
+
       <PasswordInput
         v-model="confirmPassword"
         name="Password Confirmation"
@@ -96,22 +104,18 @@
         :showWarning="showWarning"
         placeholderText="Confirm your password"
       />
-    </div>
 
-    <hr />
+      <hr />
 
-    <div class="mb-3">
-       <DateInput
+      <DateInput
         v-model="birthdate"
         name="Birth Date"
         :isRequired="true"
         :showWarning="showWarning"
       />
-    </div>
 
-    <hr />
+      <hr />
 
-    <div class="mb-3">
       <BaseRadioGroup
         v-model="gender"
         name="gender"
@@ -131,16 +135,16 @@
           label="Female"
         />
       </BaseRadioGroup>
-    </div>
 
-    <hr />
+      <hr />
 
-    <BtnOutline
-      class="d-flex w-100 justify-content-center"
-      type="submit"
-      variant="info"
-      :disabled="authenticationStore.loading"
-      :buttonText="authenticationStore.loading ? 'Loading...' : 'Sign Up'"
-    />
-  </BaseForm>
+      <BtnOutline
+        class="d-flex w-100 justify-content-center"
+        type="submit"
+        variant="info"
+        :disabled="authenticationStore.loading || !isFormFilled"
+        :buttonText="authenticationStore.loading ? 'Loading...' : 'Sign Up'"
+      />
+    </BaseForm>
+  </div>
 </template>
