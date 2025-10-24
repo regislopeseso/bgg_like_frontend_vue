@@ -14,6 +14,7 @@ const router = useRouter()
 const signInFormRef = ref(null)
 const signUpFormRef = ref(null)
 
+
 // State
 const isNothingSelected = ref(true)
 const signInSelected = ref(false)
@@ -89,7 +90,6 @@ const buildTypewriterEffect = () => {
 // Handle Sign Option Change
 const handleSignOptionChange = async (isSignIn) => {
   if (isAnimating.value) return
-
 
   // If clicking the already active button, do nothing
   if (signInSelected.value === isSignIn) return
@@ -190,8 +190,6 @@ onMounted(() => buildTypewriterEffect())
       :message="alertMessage"
     />
   </div>
-
-
 </template>
 
 <style lang="scss">

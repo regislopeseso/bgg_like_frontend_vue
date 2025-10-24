@@ -1,3 +1,4 @@
+//this is: authenticationService.js
 import axios from 'axios'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
@@ -31,6 +32,7 @@ export const authenticationService = {
     }, {
       withCredentials: true
     })
+
     return response.data
   },
 
@@ -42,4 +44,16 @@ export const authenticationService = {
     console.log("Trying to sign out, response.data is:",response.data)
     return response.data
   },
+
+  async resetpassword(userEmail, newPassword, token) {
+    const response = await axios.post(`${API_BASE_URL}/users/resetpassword`, {
+        UserEmail: userEmail,
+        NewPassword: newPassword,
+        Token: token,
+      }, {
+        withCredentials: true
+      })
+
+      return response.data
+  }
 }

@@ -1,3 +1,6 @@
+// This file is: index.js
+// to configure Vue Router with route definitions and navigation guards
+
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthenticationStore } from '@/stores/authenticationStore'
 
@@ -22,6 +25,11 @@ const routes = [
     path: '/authentication',
     name: 'authentication',
     component: () => import('@/views/AuthenticationView.vue'),
+  },
+  {
+    path: '/resetpassword',
+    name: 'resetpassword',
+    component: () => import('@/views/ResetPasswordView.vue'),
   },
   {
     path: '/user',

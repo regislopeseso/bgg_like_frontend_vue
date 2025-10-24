@@ -1,3 +1,4 @@
+//this is: useAuthenticationStore.js
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { authenticationService } from '@/services/authenticationService'
@@ -58,7 +59,7 @@ export const useAuthenticationStore = defineStore('auth', () => {
     try {
       const data = await authenticationService.signup(
         credentials.Name,
-        credentials.Email,              // Changed from UserEmail
+        credentials.Email,
         credentials.Password,
         credentials.UserBirthDate,
         credentials.Gender || 1
@@ -127,7 +128,35 @@ export const useAuthenticationStore = defineStore('auth', () => {
         loading.value = false
 
         // Redirect to login or home page
-        router.push('/')
+        await router.replace('/')
+    }
+  }
+
+  async function resetpassword(credentials) {
+    loading.value = true
+    error.value = null
+
+    try {
+      const data = await authenticationService.resetpassword(
+        credentials.Email,
+        credentials.Token,
+        credentials.Password
+      )
+
+      // Sign-in successful
+      await checkAuthentication()
+
+      return data
+    } catch (err) {
+      isAuthenticated.value = false
+      role.value = null
+
+      // Simply use the error message from the backend
+      error.value = err.response?.data?.message || err.message || 'An error occurred during reset-password.'
+
+      throw err
+    } finally {
+      loading.value = false
     }
   }
 
@@ -150,5 +179,6 @@ export const useAuthenticationStore = defineStore('auth', () => {
     signup,
     signin,
     signout,
+    resetpassword
   }
 })
