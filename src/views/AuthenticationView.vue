@@ -1,122 +1,122 @@
-<!-- AuthenticationView.vue component -->
+<!-- This is AuthenticationView.vue view file -->
 <script setup>
-// --- Imports ---
-import { ref, onMounted, nextTick } from 'vue';
-import { useRouter } from 'vue-router'
-import SignUpForm from '@/components/forms/SignUpForm.vue';
-import SignInForm from '@/components/forms/SignInForm.vue';
-import SuccessAlert from '@/components/alerts/SuccessAlert.vue';
-import ErrorAlert from '@/components/alerts/ErrorAlert.vue';
+  // --- Imports ---
+  import { ref, onMounted, nextTick } from 'vue';
+  import { useRouter } from 'vue-router'
+  import SignUpForm from '@/components/forms/SignUpForm.vue';
+  import SignInForm from '@/components/forms/SignInForm.vue';
+  import SuccessAlert from '@/components/alerts/SuccessAlert.vue';
+  import ErrorAlert from '@/components/alerts/ErrorAlert.vue';
 
-const router = useRouter()
+  const router = useRouter()
 
-// Template Refs
-const signInFormRef = ref(null)
-const signUpFormRef = ref(null)
+  // Template Refs
+  const signInFormRef = ref(null)
+  const signUpFormRef = ref(null)
 
 
-// State
-const isNothingSelected = ref(true)
-const signInSelected = ref(false)
-const welcomingText1 = ref('')
-const welcomingText2 = ref('')
-const showForms = ref(false)
-const isAnimating = ref(false)
+  // State
+  const isNothingSelected = ref(true)
+  const signInSelected = ref(false)
+  const welcomingText1 = ref('')
+  const welcomingText2 = ref('')
+  const showForms = ref(false)
+  const isAnimating = ref(false)
 
-// Alert State
-const showSuccessAlert = ref(false)
-const showErrorAlert = ref(false)
-const alertTitle = ref('')
-const alertMessage = ref('')
+  // Alert State
+  const showSuccessAlert = ref(false)
+  const showErrorAlert = ref(false)
+  const alertTitle = ref('')
+  const alertMessage = ref('')
 
-// Functions
-// Navigation function
-const redirectToUsersPage = () => {
-  router.push('/user')
-}
-// Success alert function
-function showSuccess({title, message}) {
-  alertTitle.value = title
-  alertMessage.value = message
-  showSuccessAlert.value = true
-}
-// Error alert function
-function showError({title, message}) {
-  alertTitle.value = title
-  alertMessage.value = message
-  showErrorAlert.value = true
-}
-
-const buildTypewriterEffect = () => {
-  welcomingText1.value = ''
-  welcomingText2.value = ''
-  const msg1 = 'Hello and Welcome!'
-  const msg2 = "Please sign in or sign up"
-  let i = 0
-  let j = 0
-
-  const typeFirst = () => {
-    if (i < msg1.length) {
-      welcomingText1.value += msg1.charAt(i)
-      i++
-      setTimeout(typeFirst, 25)
-    } else {
-      setTimeout(typeSecond, 10)
-    }
+  // Functions
+  // Navigation function
+  const redirectToUsersPage = () => {
+    router.push('/user')
+  }
+  // Success alert function
+  function showSuccess({title, message}) {
+    alertTitle.value = title
+    alertMessage.value = message
+    showSuccessAlert.value = true
+  }
+  // Error alert function
+  function showError({title, message}) {
+    alertTitle.value = title
+    alertMessage.value = message
+    showErrorAlert.value = true
   }
 
-  const typeSecond = () => {
-    if (j < msg2.length) {
-      welcomingText2.value += msg2.charAt(j)
-      j++
-      setTimeout(typeSecond, 25)
-    } else {
-      // Typewriter is done — wait a bit for visual pause
-      setTimeout(() => {
-        // Paint "Sign in" button as selected
-        isNothingSelected.value = false
-        signInSelected.value = true
+  const buildTypewriterEffect = () => {
+    welcomingText1.value = ''
+    welcomingText2.value = ''
+    const msg1 = 'Hello and Welcome!'
+    const msg2 = "Please sign in or sign up"
+    let i = 0
+    let j = 0
 
+    const typeFirst = () => {
+      if (i < msg1.length) {
+        welcomingText1.value += msg1.charAt(i)
+        i++
+        setTimeout(typeFirst, 25)
+      } else {
+        setTimeout(typeSecond, 10)
+      }
+    }
+
+    const typeSecond = () => {
+      if (j < msg2.length) {
+        welcomingText2.value += msg2.charAt(j)
+        j++
+        setTimeout(typeSecond, 25)
+      } else {
+        // Typewriter is done — wait a bit for visual pause
         setTimeout(() => {
-          showForms.value = true
-        },100)
-      }, 200)
+          // Paint "Sign in" button as selected
+          isNothingSelected.value = false
+          signInSelected.value = true
+
+          setTimeout(() => {
+            showForms.value = true
+          },100)
+        }, 200)
+      }
     }
+
+    typeFirst()
   }
 
-  typeFirst()
-}
+  // Handle Sign Option Change
+  const handleSignOptionChange = async (isSignIn) => {
+    if (isAnimating.value) return
 
-// Handle Sign Option Change
-const handleSignOptionChange = async (isSignIn) => {
-  if (isAnimating.value) return
+    // If clicking the already active button, do nothing
+    if (signInSelected.value === isSignIn) return
 
-  // If clicking the already active button, do nothing
-  if (signInSelected.value === isSignIn) return
+    isAnimating.value = true
 
-  isAnimating.value = true
+    // Update selection
+    signInSelected.value = isSignIn
 
-  // Update selection
-  signInSelected.value = isSignIn
+    // Wait for form transition
+    await new Promise(resolve => setTimeout(resolve, 600))
 
-  // Wait for form transition
-  await new Promise(resolve => setTimeout(resolve, 600))
+    // Focus on the appropriate input using template refs
+    await nextTick()
+    const formComponent = isSignIn ? signInFormRef.value : signUpFormRef.value
 
-  // Focus on the appropriate input using template refs
-  await nextTick()
-  const formComponent = isSignIn ? signInFormRef.value : signUpFormRef.value
+    if (formComponent?.$el) {
+      const inputId = isSignIn ? 'signInEmail' : 'newUserName'
+      const inputElement = formComponent.$el.querySelector(`#${inputId}`)
+      inputElement?.focus()
+    }
 
-  if (formComponent?.$el) {
-    const inputId = isSignIn ? 'signInEmail' : 'newUserName'
-    const inputElement = formComponent.$el.querySelector(`#${inputId}`)
-    inputElement?.focus()
+    isAnimating.value = false
   }
 
-  isAnimating.value = false
-}
-
-// Lifecycle
-onMounted(() => buildTypewriterEffect())
+  // Lifecycle
+  onMounted(() => buildTypewriterEffect())
 </script>
 
 <template>

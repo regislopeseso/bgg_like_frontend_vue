@@ -7,6 +7,7 @@
     modelValue: [String, Number],
     name: { type: String, default: '' },
     type: { type: String, default: 'text' },
+    labelstyle: { type: String, default: 'info'},
     placeholder: { type: String, default: '' },
     isRequired: { type: Boolean, default: false },
     showWarning: { type: Boolean, default: false },
@@ -49,12 +50,28 @@
   const coloredLabel = computed(() => {
     if(!props.name) return '';
 
+    let labelStyle = ''
+    switch (props.labelstyle) {
+      case('danger'):
+        labelStyle = 'reddish-initials'
+        break;
+      case('warning'):
+        labelStyle = 'yellowish-initials'
+        break;
+      case('success'):
+        labelStyle = 'greenish-initials'
+        break;
+      default:
+        labelStyle = 'blueish-initials'
+        break;
+    }
+
     return props.name
       .split(' ')
       .map(word => {
-        if(!word) return '';
+       if(!word) return '';
 
-       return `<span class="blueish-letter">${word[0].toUpperCase()}</span>${word.slice(1).toLowerCase()}`;
+       return `<span class="${labelStyle}">${word[0].toUpperCase()}</span>${word.slice(1).toLowerCase()}`;
       })
       .join(' ');
   })

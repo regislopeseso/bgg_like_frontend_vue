@@ -1,3 +1,4 @@
+<!-- This is the SuccessAlert.vue component file -->
 <script setup>
 import BaseAlert from './BaseAlert.vue'
 

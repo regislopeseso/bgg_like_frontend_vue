@@ -1,3 +1,5 @@
+/* This is the base.css file. */
+
 @import url('https://fonts.googleapis.com/css2?family=Anta&display=swap');
 
 :root {
@@ -32,8 +34,17 @@ hr {
   opacity: 0.7;
 }
 
-.blueish-letter{
+.blueish-initials{
   color: var(--blueish-color);
+}
+.reddish-initials{
+  color: var(--reddish-color);
+}
+.yellowish-initials{
+  color: var(--yellowish-color);
+}
+.greenish-initials{
+  color: var(--greenish-color);
 }
 
 

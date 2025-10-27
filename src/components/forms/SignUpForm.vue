@@ -1,4 +1,4 @@
-<!-- SignUpForm.vue component -->
+<!-- This is the SignUpForm.vue component -->
 <script setup>
   import { ref, computed } from 'vue'
   import { useAuthenticationStore } from '@/stores/authenticationStore'

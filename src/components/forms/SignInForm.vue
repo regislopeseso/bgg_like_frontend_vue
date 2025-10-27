@@ -1,14 +1,15 @@
-<!-- SignInForm.vue component -->
+<!-- This is the SignInForm.vue component files-->
 <script setup>
   import { ref } from 'vue'
   import { useAuthenticationStore } from '@/stores/authenticationStore'
+  import { useRouter } from 'vue-router'
   import ContentLoader from '../loaders/ContentLoader.vue'
   import BaseForm from './BaseForm.vue'
   import EmailInput from '../inputs/EmailInput.vue'
   import PasswordInput from '../inputs/PasswordInput.vue'
   import BtnOutline from '../buttons/BtnOutline.vue'
 
-
+  const router = useRouter()
   const emit = defineEmits(['success', 'error'])
   const authenticationStore = useAuthenticationStore()
 
@@ -37,6 +38,11 @@
       emit('error', {title:'Login failed', message: authenticationStore.error || error.message})
     }
   }
+
+  // Navigation function
+  const redirectToForgotPassword = () => {
+    router.push('/forgotpassword')
+  }
 </script>
 
 <template>
@@ -62,6 +68,8 @@
         placeholderText="Enter your password"
       />
 
+      <a @click='redirectToForgotPassword'>Forgot your Password?</a>
+
       <hr />
 
       <BtnOutline
@@ -74,5 +82,21 @@
     </BaseForm>
   </div>
 </template>
+
+<style lang="scss" scoped>
+  a {
+    display: flex;
+    padding-top: 5px;
+    color: var(--blueish-color) !important;
+    transition: all 0.3s ease-in-out;
+
+    &:hover{
+      color: var(--yellowish-color) !important;
+      text-decoration:overline;
+    }
+  }
+
+
+</style>
 
 

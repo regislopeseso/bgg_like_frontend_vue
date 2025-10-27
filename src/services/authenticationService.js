@@ -1,4 +1,4 @@
-//this is: authenticationService.js
+// This is the authenticationService.js service file
 import axios from 'axios'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
@@ -42,6 +42,16 @@ export const authenticationService = {
     })
 
     console.log("Trying to sign out, response.data is:",response.data)
+    return response.data
+  },
+
+  async forgotpassword(userEmail) {
+  const response = await axios.post(`${API_BASE_URL}/users/forgotpassword`, {
+      UserEmail: userEmail,
+    }, {
+      withCredentials: true
+    })
+
     return response.data
   },
 

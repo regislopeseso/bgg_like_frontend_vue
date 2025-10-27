@@ -34,7 +34,7 @@
       .map(word => {
         if(!word) return '';
 
-       return `<span class="blueish-letter">${word[0].toUpperCase()}</span>${word.slice(1).toLowerCase()}`;
+       return `<span class="blueish-initials">${word[0].toUpperCase()}</span>${word.slice(1).toLowerCase()}`;
       })
       .join(' ');
   })

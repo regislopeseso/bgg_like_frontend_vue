@@ -1,9 +1,9 @@
-<!-- This is the ResetPasswordView.vue view file -->
+<!-- This is the ForgotPasswordView.vue view -->
 <script setup>
   // --- Imports ---
   import { ref } from 'vue';
   import { useRouter } from 'vue-router'
-  import ResetPasswordForm from '@/components/forms/ResetPasswordForm.vue';
+  import ForgotPasswordForm from '@/components/forms/ForgotPasswordForm.vue';
   import SuccessAlert from '@/components/alerts/SuccessAlert.vue';
   import ErrorAlert from '@/components/alerts/ErrorAlert.vue';
 
@@ -37,8 +37,8 @@
 
 
 <template>
-  <div id="reset-password-view">
-    <ResetPasswordForm
+  <div id="forgot-password-view">
+    <ForgotPasswordForm
       @success="showSuccess"
       @error="showError"
     />
@@ -64,11 +64,13 @@
 </template>
 
 <style lang="scss" scoped>
-  #reset-password-view{
+  #forgot-password-view{
     display: flex;
     justify-content: center;
     align-content: center;
     padding: 8rem;
     width: 100%;
   }
+
+
 </style>

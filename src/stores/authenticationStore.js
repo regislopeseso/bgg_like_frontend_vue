@@ -1,4 +1,4 @@
-//this is: useAuthenticationStore.js
+// This is the useAuthenticationStore.js store file
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { authenticationService } from '@/services/authenticationService'
@@ -132,18 +132,41 @@ export const useAuthenticationStore = defineStore('auth', () => {
     }
   }
 
-  async function resetpassword(credentials) {
+  async function forgotpassword(payload) {
+    loading.value = true
+    error.value = null
+
+    try {
+      const data = await authenticationService.forgotpassword(
+        payload.Email,
+      )
+
+      return data.message
+    } catch (err) {
+      // Simply use the error message from the backend
+      error.value = err.response?.data?.message || err.message || 'An error occurred during forgot-password.'
+
+      throw err
+    } finally {
+      isAuthenticated.value = false
+      role.value = null
+      loading.value = false
+    }
+  }
+
+  async function resetpassword(payload) {
     loading.value = true
     error.value = null
 
     try {
       const data = await authenticationService.resetpassword(
-        credentials.Email,
-        credentials.Token,
-        credentials.Password
+        payload.Email,
+        payload.Token,
+        payload.Password
       )
 
-      // Sign-in successful
+      // After successful password reset, check authentication
+      // This will log the user in automatically if backend returns auth cookies
       await checkAuthentication()
 
       return data
@@ -151,7 +174,7 @@ export const useAuthenticationStore = defineStore('auth', () => {
       isAuthenticated.value = false
       role.value = null
 
-      // Simply use the error message from the backend
+      // Use the error message from the backend
       error.value = err.response?.data?.message || err.message || 'An error occurred during reset-password.'
 
       throw err
@@ -179,6 +202,7 @@ export const useAuthenticationStore = defineStore('auth', () => {
     signup,
     signin,
     signout,
+    forgotpassword,
     resetpassword
   }
 })

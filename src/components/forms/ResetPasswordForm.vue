@@ -1,6 +1,7 @@
-<!-- ResetPassword.vue component -->
+<!-- This is the ResetPassword.vue component file -->
 <script setup>
-  import { ref } from 'vue'
+  import { ref, onMounted } from 'vue'
+  import { useRoute } from 'vue-router'
   import { useAuthenticationStore } from '@/stores/authenticationStore'
   import ContentLoader from '../loaders/ContentLoader.vue'
   import BaseForm from './BaseForm.vue'
@@ -9,11 +10,28 @@
 
 
   const emit = defineEmits(['success', 'error'])
+  const route = useRoute()
   const authenticationStore = useAuthenticationStore()
 
+  const email = ref('')
+  const token = ref('')
   const password = ref('')
   const confirmPassword = ref('')
   const showWarning = ref(false)
+
+  // Extract email and toker from URL on component mount
+  onMounted(() => {
+    email.value = route.query.email || ''
+    token.value = route.query.token || ''
+
+    // Validate that both email and token are present
+    if(!email.value || !token.value) {
+      emit('error', {
+        title: 'Invalid Reset Link',
+        message: 'Email and or reset token are missing. Please request a new password reset.'
+      })
+    }
+  })
 
   const handleSubmit = async () => {
     // Show warnings on all fields
@@ -25,10 +43,27 @@
       return
     }
 
+    if (password.value.length < 6) {
+      emit('error', {
+        title: 'Validation error',
+        message: 'Password must be at least 6 characters long.'
+      })
+      return
+    }
+
+    if(password.value !== confirmPassword.value) {
+      emit('error', {
+        title: 'Validation error',
+        message: 'Passwords do not match.'
+      })
+      return
+    }
+
     try {
       await authenticationStore.resetpassword({
+        Email: email.value,
         Password: password.value,
-        confirmPassword: confirmPassword.value
+        Token: token.value
       })
       emit('success', {title:'Password reset successful', message:'Welcome back!'})
       showWarning.value = false
@@ -43,9 +78,26 @@
     <ContentLoader :show="authenticationStore.loading" />
 
     <BaseForm @submit="handleSubmit">
-       <PasswordInput
+      <h1><span>C</span>reate a <span>n</span>ew <span>P</span>assword</h1>
+
+      <hr />
+
+       <!-- Show email (read-only) for user confirmation -->
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          :value="email"
+          readonly
+          disabled
+        />
+      </div>
+
+      <PasswordInput
         v-model="password"
         name="Password"
+        labelstyle="warning"
         :isRequired="true"
         :showWarning="showWarning"
         placeholderText="Enter your new password"
@@ -56,6 +108,7 @@
       <PasswordInput
         v-model="confirmPassword"
         name="Password Confirmation"
+        labelstyle="warning"
         :isRequired="true"
         :showWarning="showWarning"
         placeholderText="Confirm your password"
@@ -66,8 +119,8 @@
       <BtnOutline
         class="d-flex w-100 justify-content-center"
         type="submit"
-        variant="info"
-        :disabled="authenticationStore.loading"
+        variant="warning"
+        :disabled="authenticationStore.loading  || !email || !token"
         :buttonText="authenticationStore.loading ? 'Loading...' : 'Reset Password'"
       />
     </BaseForm>
