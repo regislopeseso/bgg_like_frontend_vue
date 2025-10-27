@@ -52,17 +52,17 @@ export const useAuthenticationStore = defineStore('auth', () => {
     }
   }
 
-  async function signup(credentials) {
+  async function signup(payload) {
     loading.value = true
     error.value = null
 
     try {
       const data = await authenticationService.signup(
-        credentials.Name,
-        credentials.Email,
-        credentials.Password,
-        credentials.UserBirthDate,
-        credentials.Gender || 1
+        payload.Name,
+        payload.Email,
+        payload.Password,
+        payload.UserBirthDate,
+        payload.Gender || 1
       )
 
       // Signup successful, now get the user's role
@@ -79,14 +79,14 @@ export const useAuthenticationStore = defineStore('auth', () => {
     }
   }
 
-  async function signin(credentials) {
+  async function signin(payload) {
     loading.value = true
     error.value = null
 
     try {
       const data = await authenticationService.signin(
-        credentials.Email,
-        credentials.Password
+        payload.Email,
+        payload.Password
       )
 
       // Sign-in successful
@@ -161,13 +161,13 @@ export const useAuthenticationStore = defineStore('auth', () => {
     try {
       const data = await authenticationService.resetpassword(
         payload.Email,
+        payload.Password,
         payload.Token,
-        payload.Password
       )
 
-      // After successful password reset, check authentication
-      // This will log the user in automatically if backend returns auth cookies
-      await checkAuthentication()
+      if(data.content.isPasswordResetSuccessfull === true){
+        await signin(payload);
+      }
 
       return data
     } catch (err) {

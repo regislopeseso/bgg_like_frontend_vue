@@ -6,8 +6,8 @@
     id: { type: String, default: '' },
     modelValue: [String, Number],
     name: { type: String, default: '' },
-    type: { type: String, default: 'text' },
     labelstyle: { type: String, default: 'info'},
+    type: { type: String, default: 'text' },
     placeholder: { type: String, default: '' },
     isRequired: { type: Boolean, default: false },
     showWarning: { type: Boolean, default: false },
@@ -125,7 +125,7 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .base-input-wrapper {
     position: relative;
 
@@ -147,6 +147,8 @@
         &:disabled{
           border: 1px solid var(--bg-color);
           background-color: var(--second-bg-color);
+          color: var(--text-color);
+          opacity: 0.6;
         }
 
         &:disabled::placeholder {

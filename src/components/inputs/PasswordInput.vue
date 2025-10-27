@@ -7,6 +7,7 @@
     placeholderText: { type: String, default: '' },
     modelValue: String,
     name: { type: String, default: '' },
+    labelstyle: { type: String, default: 'info' },
     isRequired: { type: Boolean, default: false },
     showWarning: { type: Boolean, default: false }
   })
@@ -42,6 +43,7 @@
       v-model="passwordProxy"
       :type="inputType"
       :name="name"
+      :labelstyle="labelstyle"
       :placeholder="placeholderText"
       :isRequired="isRequired"
       @validation-error="emit('validation-error', $event)"
@@ -64,7 +66,7 @@
   .password-input{
     flex-grow: 1;
   }
-  
+
   .password-toggle{
     height: 2.5em;
     cursor: pointer;

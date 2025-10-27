@@ -5,6 +5,7 @@
   import { useAuthenticationStore } from '@/stores/authenticationStore'
   import ContentLoader from '../loaders/ContentLoader.vue'
   import BaseForm from './BaseForm.vue'
+  import EmailInput from '../inputs/EmailInput.vue'
   import PasswordInput from '../inputs/PasswordInput.vue'
   import BtnOutline from '../buttons/BtnOutline.vue'
 
@@ -83,16 +84,16 @@
       <hr />
 
        <!-- Show email (read-only) for user confirmation -->
-      <div class="mb-3">
-        <label class="form-label">Email</label>
-        <input
-          type="email"
-          class="form-control"
-          :value="email"
-          readonly
-          disabled
-        />
-      </div>
+
+      <EmailInput
+        id="user-email"
+        name="Email"
+        labelstyle="warning"
+        :model-value="email"
+        :disabled="true"
+      />
+
+      <hr />
 
       <PasswordInput
         v-model="password"
@@ -103,9 +104,8 @@
         placeholderText="Enter your new password"
       />
 
-      <hr />
-
       <PasswordInput
+        class="pt-3"
         v-model="confirmPassword"
         name="Password Confirmation"
         labelstyle="warning"
@@ -126,5 +126,11 @@
     </BaseForm>
   </div>
 </template>
+
+<style lang="scss" scoped>
+  span{
+    color: var(--yellowish-color);
+  }
+</style>
 
 
