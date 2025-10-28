@@ -141,6 +141,15 @@ export const useAuthenticationStore = defineStore('auth', () => {
         payload.Email,
       )
 
+      if(!data.content)
+      {
+        error.value = data.message
+
+        console.log("Forgot-password Error:", error.value)
+
+        throw new Error("Unable to send reset email at this time. Please try again later.")
+      }
+
       return data.message
     } catch (err) {
       // Simply use the error message from the backend

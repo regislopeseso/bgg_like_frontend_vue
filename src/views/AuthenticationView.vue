@@ -3,12 +3,23 @@
   // --- Imports ---
   import { ref, useTemplateRef, onMounted, nextTick } from 'vue';
   import { useRouter } from 'vue-router'
+  import { useAlerts } from '@/composables/useAlert';
   import SignUpForm from '@/components/forms/SignUpForm.vue';
   import SignInForm from '@/components/forms/SignInForm.vue';
   import SuccessAlert from '@/components/alerts/SuccessAlert.vue';
   import ErrorAlert from '@/components/alerts/ErrorAlert.vue';
 
   const router = useRouter()
+
+  // Use the composable
+  const {
+    showSuccessAlert,
+    showErrorAlert,
+    alertTitle,
+    alertMessage,
+    showSuccess,
+    showError
+  } = useAlerts()
 
   // Template Refs
   const signInFormRef = useTemplateRef('signInFormRef')
@@ -23,28 +34,10 @@
   const showForms = ref(false)
   const isAnimating = ref(false)
 
-  // Alert State
-  const showSuccessAlert = ref(false)
-  const showErrorAlert = ref(false)
-  const alertTitle = ref('')
-  const alertMessage = ref('')
-
   // Functions
   // Navigation function
   const redirectToUsersPage = () => {
     router.push('/user')
-  }
-  // Success alert function
-  function showSuccess({title, message}) {
-    alertTitle.value = title
-    alertMessage.value = message
-    showSuccessAlert.value = true
-  }
-  // Error alert function
-  function showError({title, message}) {
-    alertTitle.value = title
-    alertMessage.value = message
-    showErrorAlert.value = true
   }
 
   const buildTypewriterEffect = () => {
@@ -162,7 +155,7 @@
           @success="showSuccess"
           @error="showError"
         />
-        
+
         <SignUpForm
           v-else
           ref="signUpFormRef"

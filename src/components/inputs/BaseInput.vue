@@ -76,7 +76,6 @@
       .join(' ');
   })
 
-  // mudar o metodo abaixo para o text input!
   const getInputClass = computed(() => {
     switch (true) {
       case hasWarning.value:

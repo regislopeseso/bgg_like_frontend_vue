@@ -1,9 +1,9 @@
 <!-- This is the SignInForm.vue component files-->
 <script setup>
-  import { ref, useTemplateRef, onMounted } from 'vue'
+  import { ref, useTemplateRef, onMounted, computed } from 'vue'
   import { useAuthenticationStore } from '@/stores/authenticationStore'
   import { useRouter } from 'vue-router'
- 
+
   import BaseForm from './BaseForm.vue'
   import EmailInput from '../inputs/EmailInput.vue'
   import PasswordInput from '../inputs/PasswordInput.vue'
@@ -20,6 +20,8 @@
   const email = ref('')
   const password = ref('')
   const showWarning = ref(false)
+  const emailTouched = ref(false) // Track if email field has been touched
+
 
 
   const handleSubmit = async () => {
@@ -49,7 +51,21 @@
     router.push('/forgotpassword')
   }
 
-    // Focus on mount
+   // Mark email as touched when user leaves the field
+  const handleEmailBlur = () => {
+    emailTouched.value = true
+  }
+
+  // Computed property to check if forgot password link should show
+  const showForgetPassword = computed(() => {
+    // Simple email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailTouched.value && emailRegex.test(email.value)
+  })
+
+
+
+  // Focus on mount
   onMounted(() => {
     // Wait a tick for the component to fully render
     setTimeout(() => {
@@ -73,6 +89,7 @@
         :isRequired="true"
         :showWarning="showWarning"
         placeholderText="Type in your email"
+        @blur="handleEmailBlur"
       />
 
       <hr />
@@ -85,7 +102,12 @@
         placeholderText="Enter your password"
       />
 
-      <a @click='redirectToForgotPassword'>Forgot your Password?</a>
+      <a
+        v-if="showForgetPassword"
+        @click='redirectToForgotPassword'
+      >
+        Forgot your Password?
+      </a>
 
       <hr />
 
@@ -108,6 +130,7 @@
     transition: all 0.3s ease-in-out;
 
     &:hover{
+      cursor: pointer;
       color: var(--yellowish-color) !important;
       text-decoration:overline;
     }

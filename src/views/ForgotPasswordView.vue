@@ -1,37 +1,31 @@
 <!-- This is the ForgotPasswordView.vue view -->
 <script setup>
   // --- Imports ---
-  import { ref } from 'vue';
   import { useRouter } from 'vue-router'
+  import { useAlerts } from '@/composables/useAlert';
   import ForgotPasswordForm from '@/components/forms/ForgotPasswordForm.vue';
   import SuccessAlert from '@/components/alerts/SuccessAlert.vue';
   import ErrorAlert from '@/components/alerts/ErrorAlert.vue';
 
   const router = useRouter()
 
-  // Alert State
-  const showSuccessAlert = ref(false)
-  const showErrorAlert = ref(false)
-  const alertTitle = ref('')
-  const alertMessage = ref('')
+  // Use the composable
+  const {
+    showSuccessAlert,
+    showErrorAlert,
+    alertTitle,
+    alertMessage,
+    showSuccess,
+    showError
+  } = useAlerts()
+
 
   // Functions
   // Navigation function
   const redirectToHomePage = () => {
     router.push('/')
   }
-  // Success alert function
-  function showSuccess({title, message}) {
-    alertTitle.value = title
-    alertMessage.value = message
-    showSuccessAlert.value = true
-  }
-  // Error alert function
-  function showError({title, message}) {
-    alertTitle.value = title
-    alertMessage.value = message
-    showErrorAlert.value = true
-  }
+
 
 </script>
 
