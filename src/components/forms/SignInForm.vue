@@ -1,9 +1,9 @@
 <!-- This is the SignInForm.vue component files-->
 <script setup>
-  import { ref } from 'vue'
+  import { ref, useTemplateRef, onMounted } from 'vue'
   import { useAuthenticationStore } from '@/stores/authenticationStore'
   import { useRouter } from 'vue-router'
-  import ContentLoader from '../loaders/ContentLoader.vue'
+ 
   import BaseForm from './BaseForm.vue'
   import EmailInput from '../inputs/EmailInput.vue'
   import PasswordInput from '../inputs/PasswordInput.vue'
@@ -13,9 +13,14 @@
   const emit = defineEmits(['success', 'error'])
   const authenticationStore = useAuthenticationStore()
 
+  // Template ref for email input
+  const emailInputRef = useTemplateRef('emailInputRef')
+
+  // Reactive State
   const email = ref('')
   const password = ref('')
   const showWarning = ref(false)
+
 
   const handleSubmit = async () => {
     // Show warnings on all fields
@@ -43,6 +48,17 @@
   const redirectToForgotPassword = () => {
     router.push('/forgotpassword')
   }
+
+    // Focus on mount
+  onMounted(() => {
+    // Wait a tick for the component to fully render
+    setTimeout(() => {
+      if (emailInputRef.value?.$el) {
+        const input = emailInputRef.value.$el.querySelector('input')
+        input?.focus()
+      }
+    }, 400)
+  })
 </script>
 
 <template>
@@ -51,6 +67,7 @@
 
     <BaseForm @submit="handleSubmit">
       <EmailInput
+        ref="emailInputRef"
         v-model="email"
         name="Email"
         :isRequired="true"

@@ -1,7 +1,7 @@
 <!-- This is AuthenticationView.vue view file -->
 <script setup>
   // --- Imports ---
-  import { ref, onMounted, nextTick } from 'vue';
+  import { ref, useTemplateRef, onMounted, nextTick } from 'vue';
   import { useRouter } from 'vue-router'
   import SignUpForm from '@/components/forms/SignUpForm.vue';
   import SignInForm from '@/components/forms/SignInForm.vue';
@@ -11,8 +11,8 @@
   const router = useRouter()
 
   // Template Refs
-  const signInFormRef = ref(null)
-  const signUpFormRef = ref(null)
+  const signInFormRef = useTemplateRef('signInFormRef')
+  const signUpFormRef = useTemplateRef('signUpFormRef')
 
 
   // State
@@ -162,6 +162,7 @@
           @success="showSuccess"
           @error="showError"
         />
+        
         <SignUpForm
           v-else
           ref="signUpFormRef"

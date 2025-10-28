@@ -3,7 +3,6 @@
   import { useThemeStore } from '@/stores/themeStore'
   import { useAuthenticationStore } from '@/stores/authenticationStore'
   import AppNavbar from './components/navbar/AppNavbar.vue'
-  import ContentLoader from './components/loaders/ContentLoader.vue'
   import { useRouteLoader } from './composables/useRouteLoader'
 
   const { isRouteLoading } = useRouteLoader()

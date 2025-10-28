@@ -3,7 +3,7 @@
   import { ref, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
   import { useAuthenticationStore } from '@/stores/authenticationStore'
-  import ContentLoader from '../loaders/ContentLoader.vue'
+  
   import BaseForm from './BaseForm.vue'
   import EmailInput from '../inputs/EmailInput.vue'
   import PasswordInput from '../inputs/PasswordInput.vue'

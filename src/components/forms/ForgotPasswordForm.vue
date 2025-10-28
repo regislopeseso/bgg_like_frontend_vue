@@ -2,7 +2,6 @@
 <script setup>
   import { ref } from 'vue'
   import { useAuthenticationStore } from '@/stores/authenticationStore';
-  import ContentLoader from '@/components/loaders/ContentLoader.vue';
   import BaseForm from '@/components/forms/BaseForm.vue';
   import EmailInput from '@/components/inputs/EmailInput.vue';
   import BtnOutline from '@/components/buttons/BtnOutline.vue';

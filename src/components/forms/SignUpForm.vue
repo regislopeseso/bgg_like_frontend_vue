@@ -2,7 +2,7 @@
 <script setup>
   import { ref, computed } from 'vue'
   import { useAuthenticationStore } from '@/stores/authenticationStore'
-  import ContentLoader from '../loaders/ContentLoader.vue'
+ 
   import BaseForm from './BaseForm.vue'
   import TextInput from '../inputs/TextInput.vue'
   import EmailInput from '../inputs/EmailInput.vue'

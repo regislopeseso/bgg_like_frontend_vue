@@ -1,5 +1,4 @@
 <script setup>
-import ContentLoader from '@/components/loaders/ContentLoader.vue'
 import { useContentLoader } from '@/composables/useContentLoader'
 import { onMounted } from 'vue'
 
