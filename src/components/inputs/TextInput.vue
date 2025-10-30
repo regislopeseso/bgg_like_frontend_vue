@@ -1,4 +1,4 @@
-<!-- TextInput.vue component -->
+<!-- This is the ./src/components/inputs/TextInput.vue component file -->
 <script setup>
   import BaseInput from './BaseInput.vue'
 

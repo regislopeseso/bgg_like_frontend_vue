@@ -1,3 +1,4 @@
+<!-- This is the ./src/views/LifeCounterView.vue view file -->
 <script setup>
 import { useContentLoader } from '@/composables/useContentLoader'
 import { onMounted } from 'vue'

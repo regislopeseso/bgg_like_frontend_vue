@@ -1,3 +1,4 @@
+<!-- This is the ./src/views/AdminView.vue view file -->
 <script setup></script>
 
 <template>

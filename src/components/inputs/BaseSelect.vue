@@ -1,4 +1,4 @@
-<!-- BaseSelect.vue component -->
+<!-- This is the ./src/components/inputs/BaseSelect.vue component file -->
 <script setup>
   import { computed, useId } from 'vue';
 

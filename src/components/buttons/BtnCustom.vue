@@ -1,3 +1,4 @@
+<!-- This is the ./src/components/buttons/BtnCustom.vue component file -->
 <script setup>
   defineProps({
     dismiss: {

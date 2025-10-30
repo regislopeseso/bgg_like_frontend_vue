@@ -1,4 +1,4 @@
-<!-- This is the ResetPasswordView.vue view file -->
+<!-- This is the ./src/views/ResetPasswordView.vue view file -->
 <script setup>
   // --- Imports ---
   import { useRouter } from 'vue-router'

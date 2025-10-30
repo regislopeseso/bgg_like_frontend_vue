@@ -1,3 +1,4 @@
+<!-- This is the ./src/components/buttons/BtnCloseX.vue component file -->
 <script setup>
   defineProps({
     dismiss: {

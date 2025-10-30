@@ -1,8 +1,8 @@
-<!-- This is the SignUpForm.vue component -->
+<!-- This is the ./src/components/forms/SignUpForm.vue component file -->
 <script setup>
   import { ref, computed } from 'vue'
   import { useAuthenticationStore } from '@/stores/authenticationStore'
- 
+
   import BaseForm from './BaseForm.vue'
   import TextInput from '../inputs/TextInput.vue'
   import EmailInput from '../inputs/EmailInput.vue'

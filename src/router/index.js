@@ -1,4 +1,4 @@
-// This the index.js router file
+// This is the ./src/router/index.js router file
 // to configure Vue Router with route definitions and navigation guards
 
 import { createRouter, createWebHistory } from 'vue-router'

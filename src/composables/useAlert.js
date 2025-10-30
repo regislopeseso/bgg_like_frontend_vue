@@ -1,3 +1,4 @@
+// This is the ./src/composables/useAlert.js composable file
 import { ref } from 'vue'
 
 export function useAlerts() {

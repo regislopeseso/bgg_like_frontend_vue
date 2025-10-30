@@ -1,3 +1,4 @@
+<!-- This is the ./src/App.vue file -->
 <script setup>
   import { onMounted } from 'vue'
   import { useThemeStore } from '@/stores/themeStore'

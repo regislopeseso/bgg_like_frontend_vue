@@ -1,4 +1,4 @@
-<!-- This is the ForgotPasswordView.vue view -->
+<!-- This is the ./src/views/ForgotPasswordView.vue view file -->
 <script setup>
   // --- Imports ---
   import { useRouter } from 'vue-router'

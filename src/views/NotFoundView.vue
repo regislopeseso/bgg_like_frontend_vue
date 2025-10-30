@@ -1,3 +1,4 @@
+<!-- This is the ./src/views/NotFoundView.vue view file -->
 <template>
   <section class="text-center p-5">
     <h1 class="display-4">404</h1>

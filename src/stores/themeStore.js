@@ -1,3 +1,4 @@
+// This is the ./src/stores/themeStore.js store file
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 

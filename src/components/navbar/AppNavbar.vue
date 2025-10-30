@@ -1,3 +1,4 @@
+<!-- This is the ./src/components/navbar/AppNavbar.vue component file -->
 <script setup>
   import {  computed } from 'vue'
   import { useAuthenticationStore } from '@/stores/authenticationStore'

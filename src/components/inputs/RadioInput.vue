@@ -1,4 +1,4 @@
-<!-- RadioInput.vue component -->
+<!-- This is the ./src/components/inputs/RadioInput.vue component file -->
 <script setup>
   import { computed, useId } from 'vue';
 

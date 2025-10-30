@@ -1,4 +1,4 @@
-<!-- This is AuthenticationView.vue view file -->
+<!-- This is the ./src/views/AuthenticationView.vue view file -->
 <script setup>
   // --- Imports ---
   import { ref, useTemplateRef, onMounted, nextTick } from 'vue';

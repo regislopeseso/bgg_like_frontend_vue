@@ -1,4 +1,4 @@
-<!-- This is the ContentLoader.vue component file -->
+<!-- This is the ./src/components/loaders/ContentLoader.vue component file -->
 <script setup>
   import { ref, watch } from 'vue'
   import BaseLoader from './BaseLoader.vue'

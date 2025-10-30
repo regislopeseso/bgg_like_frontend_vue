@@ -1,3 +1,4 @@
+<!-- This is the ./src/components/buttons/BtnOutline.vue component file -->
 <script setup>
   defineProps({
     variant: {

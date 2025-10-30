@@ -1,4 +1,4 @@
-<!-- BaseCheckBox.vue component -->
+<!-- This is the ./src/components/inputs/BaseCheckBox.vue component file -->
 <script setup>
   import { computed, useId } from 'vue';
 

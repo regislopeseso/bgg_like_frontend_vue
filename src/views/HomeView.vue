@@ -1,3 +1,4 @@
+<!-- This is the ./src/views/HomeView.vue view file -->
 <script setup>
 
 </script>

@@ -1,4 +1,4 @@
-<!-- BaseInput.vue component -->
+<!-- This is the ./src/components/inputs/BaseInput.vue component file -->
 <script setup>
   import { ref, computed, useId } from 'vue';
 

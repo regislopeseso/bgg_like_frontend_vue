@@ -1,4 +1,4 @@
-<!-- BaseRadioGroup.vue component -->
+<!-- This is the ./src/components/inputs/BaseRadioGroup.vue component file -->
 <script setup>
   import { computed } from 'vue';
 

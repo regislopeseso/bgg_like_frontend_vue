@@ -1,3 +1,4 @@
+<!-- This is the ./src/views/UserView.vue view file -->
 <script setup></script>
 
 <template>

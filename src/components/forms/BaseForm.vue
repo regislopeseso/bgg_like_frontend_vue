@@ -1,4 +1,4 @@
-<!-- BaseForm.vue component -->
+<!-- This is the ./src/components/forms/BaseForm.vue component file -->
 <script setup>
   const emit = defineEmits(['submit'])
 </script>

@@ -1,4 +1,4 @@
-// This is the useContentLoader.js composable file
+// This is the ./src/composables/useContentLoader.js composable file
 import { ref } from 'vue'
 
 export const useContentLoader = (initialState = false) => {

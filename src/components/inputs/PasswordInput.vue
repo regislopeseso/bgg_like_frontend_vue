@@ -1,4 +1,4 @@
-<!-- PasswordInput.vue component -->
+<!-- This is the ./src/components/inputs/PasswordInput.vue component file -->
 <script setup>
   import { ref, computed } from 'vue'
   import BaseInput from './BaseInput.vue'

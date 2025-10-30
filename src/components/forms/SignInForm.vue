@@ -1,4 +1,4 @@
-<!-- This is the SignInForm.vue component files-->
+<!-- This is the ./src/components/forms/SignInForm.vue component file -->
 <script setup>
   import { ref, useTemplateRef, onMounted, computed } from 'vue'
   import { useAuthenticationStore } from '@/stores/authenticationStore'

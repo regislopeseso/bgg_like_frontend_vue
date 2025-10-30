@@ -1,4 +1,4 @@
-// This is the useAuthenticationStore.js store file
+// This is the ./src/stores/authenticationStore.js store file
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { authenticationService } from '@/services/authenticationService'

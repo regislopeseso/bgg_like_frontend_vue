@@ -1,4 +1,4 @@
-<!-- DateInput.vue component -->
+<!-- This is the ./src/components/inputs/DateInput.vue component file -->
 <script setup>
   import BaseInput from './BaseInput.vue'
 

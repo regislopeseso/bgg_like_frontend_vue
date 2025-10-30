@@ -1,4 +1,4 @@
-<!-- This is the BaseAlert.vue component file -->
+<!-- This is the ./src/components/alerts/BaseAlert.vue component file -->
 <script setup>
 import { watch } from 'vue'
 import Swal from 'sweetalert2'

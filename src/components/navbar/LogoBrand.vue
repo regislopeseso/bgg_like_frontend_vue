@@ -1,3 +1,4 @@
+<!-- This is the ./src/components/navbar/LogoBrand.vue component file -->
 <script setup>
   import { ref } from 'vue'
 

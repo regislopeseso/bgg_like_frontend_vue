@@ -1,4 +1,4 @@
-<!-- ForgotPasswordForm.vue component -->
+<!-- This is the ./src/components/forms/ForgotPasswordForm.vue component file -->
 <script setup>
   import { ref } from 'vue'
   import { useAuthenticationStore } from '@/stores/authenticationStore';

@@ -1,3 +1,4 @@
+<!-- This is the ./src/components/loaders/BaseLoader.vue component file -->
 <script setup>
 
 </script>

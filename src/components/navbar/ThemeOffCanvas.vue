@@ -1,9 +1,8 @@
+<!-- This is the ./src/components/navbar/ThemeOffCanvas.vue component file -->
 <script setup>
   import { useThemeStore } from '@/stores/themeStore'
   import BtnCloseX from '../buttons/BtnCloseX.vue'
   import BtnCustom from '../buttons/BtnCustom.vue'
-
-
 
   const themeStore = useThemeStore()
 

@@ -1,3 +1,4 @@
+<!-- This is the ./src/components/navbar/ProfileDropdown.vue component file -->
 <script setup>
   import { useAuthenticationStore } from '@/stores/authenticationStore'
 
@@ -48,7 +49,7 @@
 
 
 </script>
-<!-- v-if="authenticationStore.isAuthenticated" -->
+
 <template>
   <div class="dropdown" >
     <a

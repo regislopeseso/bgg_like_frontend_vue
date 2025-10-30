@@ -1,9 +1,9 @@
-<!-- This is the ResetPassword.vue component file -->
+<!-- This is the ./src/components/forms/ResetPasswordForm.vue component file -->
 <script setup>
   import { ref, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
   import { useAuthenticationStore } from '@/stores/authenticationStore'
-  
+
   import BaseForm from './BaseForm.vue'
   import EmailInput from '../inputs/EmailInput.vue'
   import PasswordInput from '../inputs/PasswordInput.vue'

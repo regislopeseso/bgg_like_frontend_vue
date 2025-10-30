@@ -1,3 +1,4 @@
+<!-- This is the ./src/components/alerts/WarningAlert.vue component file -->
 <script setup>
 import BaseAlert from './BaseAlert.vue'
 

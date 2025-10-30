@@ -1,4 +1,4 @@
-// composables/useRouteLoader.js
+// This is the ./src/composables/useRouteLoader.js composable file
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 
