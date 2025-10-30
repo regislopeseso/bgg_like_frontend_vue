@@ -1,7 +1,4 @@
 /* This is the ./src/assets/base.css asset file. */
-
-@import url('https://fonts.googleapis.com/css2?family=Anta&display=swap');
-
 :root {
   --bg-color: rgb(31, 36, 46);
   --second-bg-color: rgb(51, 58, 72);

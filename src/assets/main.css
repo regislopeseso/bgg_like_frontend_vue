@@ -1,6 +1,7 @@
 /* This is the ./src/assets/main.css asset file. */
 
 @import './base.css';
+@import './addons.css';
 
 /* Responsive font sizes */
 @media screen and (max-width: 3500px) { html { font-size: 120%; } }
